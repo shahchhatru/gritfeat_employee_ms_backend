@@ -1,0 +1,42 @@
+import {Response, Request,NextFunction} from 'express';
+
+import OTPService from './service';
+import { successResponse } from '../../../utils/HttpResponse';
+import {messages} from '../../../utils/Messages';
+
+
+const OtpController ={
+    async generateOTP(req:Request<{userId:string},unknown,{}>,res:Response,next:Function){
+        try{
+            const {userId}= req.params;
+            const result =  await OTPService.generateOTP(userId);
+            return successResponse({
+                response:res,
+                message:messages.otp.success,
+                data:result,
+            })
+
+        }catch(error){
+            next(error);
+        }
+    },
+
+    async verifyOTP(req:Request<{userId:string},unknown,{otp:number}>,res:Response,next:NextFunction){
+        const {userId}=req.params;
+        const {otp}= req.body;
+        try{
+            await OTPService.verifyOTP(userId,otp);
+            return successResponse({
+                response:res,
+                message:messages.otp.verification_success,
+                
+            })
+        }catch(error){
+            next(error);
+        }
+    }
+
+    
+}
+
+export default OtpController;
