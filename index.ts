@@ -2,7 +2,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import express, { Request, Response } from 'express';
-
+import redis from 'redis';
 import router from './src/routes/v1';
 import env from './src/config/env';
 import logger from './src/config/logger';
@@ -13,9 +13,11 @@ import { globalErrorHandler } from './src/middleware/globalErrorHandler';
 
 
 
+
 (async () => {
   const app = express();
-  
+  const redisClient = redis.createClient()
+
   app.use(bodyParser.json());
 
   app.use(cors(env.cors ? { origin: env.cors, optionsSuccessStatus: 200 } : undefined));

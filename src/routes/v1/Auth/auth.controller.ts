@@ -5,10 +5,11 @@ import { messages } from '../../../utils/Messages';
 import AuthService from './service';
 
 const AuthController = {
-  async login(req: Request<unknown, unknown, Auth>, res: Response,next:NextFunction) {
+  async login(req: Request<unknown, unknown, Auth>, res: Response, next: NextFunction) {
     try {
       const body = req.body;
       const result = await AuthService.login(body);
+
       return successResponse({
         status: 200,
         response: res,
@@ -21,26 +22,26 @@ const AuthController = {
   },
 
 
-  async genRefreshToken(req:Request<unknown,unknown,AuthRefresh>,res:Response,next:NextFunction){
-    try{
-      const body= req.body;
+  async genRefreshToken(req: Request<unknown, unknown, AuthRefresh>, res: Response, next: NextFunction) {
+    try {
+      const body = req.body;
       const result = await AuthService.generateNewToken(body.token);
       return successResponse({
-        status:200,
-        response:res,
-        message:messages.auth.refresh_token_success,
-        data:result,
+        status: 200,
+        response: res,
+        message: messages.auth.refresh_token_success,
+        data: result,
       })
     }
-    catch(error){
-     next(error)
+    catch (error) {
+      next(error)
     }
   }
   ,
 
   async generatePasswordResetLink(req: Request<unknown, unknown, PasswordResetRequest>, res: Response, next: NextFunction) {
     try {
-      const {email} = req.body;
+      const { email } = req.body;
       const result = await AuthService.generatePasswordResetLink(email);
       return successResponse({
         status: 200,
