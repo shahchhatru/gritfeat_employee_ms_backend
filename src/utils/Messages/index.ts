@@ -1,74 +1,82 @@
 export const messages = {
-    user: {
-      creation_success: 'User Created Successfully',
-      user_not_found:"User Not found",
-      user_found_succes:"Succesfully fetched Users"
+  organization: {
+    createsuccess: 'Organization Created Successfully',
+    create_failed: 'Failed to create organization',
+    not_found: 'No organization found',
+    get_all_success: 'Succesfully fetched all organizations',
+    fetch_success: 'Successfully fetch organization',
+    delete_success: 'Succesfully deleted organization',
+    update_success: 'Updated successfully organization',
+  },
+  user: {
+    creation_success: 'User Created Successfully',
+    user_not_found: "User Not found",
+    user_found_succes: "Succesfully fetched Users"
+  },
+  otp: {
+    creation_failed: "there was a problem creating otp",
+    success: "OTP was successfully created",
+    verification_success: "OTP was successfully verified",
+    verification_failed: "OTP verification failed"
+  },
+  task: {
+    creation_success: 'Task Created Successfully',
+    all_get_success: 'Tasks Fetched Successfully',
+    one_get_success: 'Task Fetched Successfully',
+    not_found: 'Task With Given Id Not Found',
+    edit_success: 'Task Edited Successfully',
+    delete_success: 'Task Deleted Successfully',
+    edit_forbidden: 'Forbidden To Edit Task',
+    delete_forbidden: 'Forbidden To Delete Task',
+    get_rule_success: 'Fetched Task Update Rule Successfully',
+    author_userId_mismatch: "Trying to Task using someone else credentials",
+    task_state_update_success: "Task state updated successfully",
+    validation: {
+      missing_author: 'Please provide author which exists in database in message body',
+      missing_content: "Please fill out content in the Task",
+      missing_title: "The Task must have a non empty title"
     },
-    otp:{
-        creation_failed:"there was a problem creating otp",
-        success:"OTP was successfully created",
-        verification_success:"OTP was successfully verified",
-        verification_failed:"OTP verification failed"
+  },
+  auth: {
+    login_success: 'LoggedIn Successfully',
+    invalid_account: 'Invalid Password or Email',
+    refresh_token_success: "refresh token successfully sent",
+    auth_token_expired: "the access or refresh token has expired",
+    invalid_user_id: "the user probably doesn't exits",
+    userId_not_found: "the user id not found",
+    password_reset_link_success: 'Password reset link sent successfully.',
+    password_reset_success: 'Passwozd reset successfully. Please login with new password. The password reset successfully.'
+  },
+  error: {
+    internal_server_error: 'Internal Server Error',
+  },
+  email: {
+    empty_email_address: "Email address cannot be empty",
+    invalid_email_format: "Invalid email format. Email must contain '@' and '.'.",
+    invalid_message: "Invalid email address"
+  },
+  password: {
+    errorMessages: {
+      minLength: "Password must be at least 8 characters long.",
+      digitRequired: "Password must contain at least one digit.",
+      uppercaseRequired: "Password must contain at least one uppercase letter.",
+      specialCharRequired: "Password must contain at least one special character (!@#$%^&*(),.?\":{}|<>).",
+      invalidPassword: "Invalid password."
+    }
+  },
+  comments: {
+    errorMessages: {
+      not_found: "comment not found",
+      edit_forbidden: "Forbidden To Edit Comment"
     },
-    task: {
-      creation_success: 'Task Created Successfully',
-      all_get_success: 'Tasks Fetched Successfully',
-      one_get_success: 'Task Fetched Successfully',
-      not_found: 'Task With Given Id Not Found',
-      edit_success: 'Task Edited Successfully',
-      delete_success: 'Task Deleted Successfully',
-      edit_forbidden: 'Forbidden To Edit Task',
-      delete_forbidden: 'Forbidden To Delete Task',
-      get_rule_success: 'Fetched Task Update Rule Successfully',
-      author_userId_mismatch:"Trying to Task using someone else credentials",
-      task_state_update_success:"Task state updated successfully",
-      validation: {
-        missing_author: 'Please provide author which exists in database in message body',
-        missing_content:"Please fill out content in the Task",
-        missing_title:"The Task must have a non empty title"
-      },
-    },
-    auth: {
-      login_success: 'LoggedIn Successfully',
-      invalid_account: 'Invalid Password or Email',
-      refresh_token_success:"refresh token successfully sent",
-      auth_token_expired:"the access or refresh token has expired",
-      invalid_user_id:"the user probably doesn't exits",
-      userId_not_found:"the user id not found",
-      password_reset_link_success: 'Password reset link sent successfully.',
-      password_reset_success: 'Passwozd reset successfully. Please login with new password. The password reset successfully.'
-    },
-    error: {
-      internal_server_error: 'Internal Server Error',
-    },
-    email: {
-      empty_email_address: "Email address cannot be empty",
-      invalid_email_format: "Invalid email format. Email must contain '@' and '.'.",
-      invalid_message: "Invalid email address"
-    },
-    password: {
-      errorMessages: {
-        minLength: "Password must be at least 8 characters long.",
-        digitRequired: "Password must contain at least one digit.",
-        uppercaseRequired: "Password must contain at least one uppercase letter.",
-        specialCharRequired: "Password must contain at least one special character (!@#$%^&*(),.?\":{}|<>).",
-        invalidPassword: "Invalid password."
-      }
-    },
-    comments:{
-      errorMessages:{
-        not_found:"comment not found",
-        edit_forbidden:"Forbidden To Edit Comment"
-      },
-      edit_success:"Your comment was edited successfully",
-      creation_success:"Your comment was successfully Tasked",
-      deletion_success:"Your comment was successfully deleted",
-      get_all_success:"Comments have been successfully fetched",
-    },
-    actions:{
-      forbidden_message:"You don't have permission to perform this action"
-    },
+    edit_success: "Your comment was edited successfully",
+    creation_success: "Your comment was successfully Tasked",
+    deletion_success: "Your comment was successfully deleted",
+    get_all_success: "Comments have been successfully fetched",
+  },
+  actions: {
+    forbidden_message: "You don't have permission to perform this action"
+  },
 
-   
-  };
-  
+
+};

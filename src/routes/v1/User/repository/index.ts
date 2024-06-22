@@ -1,4 +1,4 @@
-import {  UserDocument, UserModel } from '../../../../models/user';
+import { UserDocument, UserModel } from '../../../../models/user';
 import { User } from '../../../../types/user';
 
 export const createUserRepo = (userData: User): Promise<UserDocument> => {
@@ -32,3 +32,12 @@ export const getAllUsersNameID = async (): Promise<{ key: string, value: string 
 
   return result;
 };
+
+
+export const updateUser = async (id: string, userData: Partial<User>): Promise<UserDocument | null> => {
+  return UserModel.findByIdAndUpdate(id, userData, { new: true });
+}
+
+export const getUserbyOrganizationID = async (orgId: string): Promise<UserDocument[]> => {
+  return UserModel.find({ organizationId: orgId, role: "admin" })
+}

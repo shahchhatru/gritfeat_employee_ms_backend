@@ -1,8 +1,8 @@
-import mongoose, { Document, Model } from "mongoose";
+import mongoose, { Document, Model, Types } from "mongoose";
 import bcrypt from 'bcryptjs';
-import { Organization } from "types/organizations";
+import { Organization } from "../types/organizations";
 import cron from 'node-cron';
-import CustomError from "utils/Error";
+import CustomError from "../utils/Error";
 
 export const organizationPrivateFields = ['password', '__v', 'createdAt', 'updatedAt', 'verifiedAt', 'verificationExpiresAt'];
 
@@ -57,6 +57,11 @@ const organizationSchema = new mongoose.Schema<OrganizationDocument>(
             required: false,
             default: () => new Date(Date.now() + 60 * 60 * 1000), // 1 hour from now
         },
+        admin: {
+            type: Types.ObjectId,
+            ref: 'User',
+            required: false,
+        }
     },
     {
         timestamps: true,

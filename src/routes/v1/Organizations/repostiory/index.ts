@@ -31,7 +31,8 @@ export const deleteOrganizationById = (id: string): Promise<OrganizationDocument
 }
 
 
-export const updateOrganizationById = (id: string, orgData: Organization): Promise<OrganizationDocument | null> => {
+export const updateOrganizationById = (id: string, orgData: Partial<Organization>): Promise<OrganizationDocument | null> => {
+    console.log({ orgData })
     return OrganizationModel.findByIdAndUpdate(id, orgData, { new: true });
 }
 

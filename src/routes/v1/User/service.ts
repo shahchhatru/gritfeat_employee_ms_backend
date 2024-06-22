@@ -2,7 +2,7 @@ import CustomError from "../../../utils/Error";
 import { messages } from '../../../utils/Messages';
 import { User } from "../../../types/user"
 import env from "../../../config/env"
-import { createUserRepo, getAllUsers, getAllUsersNameID } from "./repository";
+import { createUserRepo, getAllUsers, getAllUsersNameID, getUserbyOrganizationID } from "./repository";
 import OTPService from "../OTP/service";
 import { sendEmailWithHTML } from "../../../utils/otp";
 const UserService = {
@@ -14,12 +14,22 @@ const UserService = {
         if (!data) throw new CustomError(messages.auth.invalid_account, 403)
         if (!data._id) throw new CustomError(messages.auth.invalid_account, 403)
         const otp = await OTPService.generateOTP(data._id.toString());
-        console.log({otp:otp.value})
+        console.log({ otp: otp.value })
         const htmlContent = `<p> Click here to verify the email <a href="${env.frontendurl}/login/otp/${otp.value}" style="background:blue;color:white;padding:8px 4px;">Verify</a>`
         await sendEmailWithHTML(htmlContent, userData.email);
         return data;
 
     },
+
+    async generateOrgAdnimUser(userData: User) {
+        this.validateEmail(userData.email);
+        this.validatePassword(userData.password);
+        const data = await createUserRepo(userData);
+        if (!data) throw new CustomError(messages.auth.invalid_account, 403)
+        if (!data._id) throw new CustomError(messages.auth.invalid_account, 403)
+        return data;
+    },
+
 
     async getUser(id: string) {
         const users = await getAllUsers();
@@ -84,9 +94,19 @@ const UserService = {
         return getAllUsers();
     },
 
-    getAllUsersNameandID(){
+    getAllUsersNameandID() {
         return getAllUsersNameID();
-    }
+    },
+
+    async getUserbyOrganizationID(orgId: string) {
+        const user = await getUserbyOrganizationID(orgId);
+
+        if (!user) {
+            throw new CustomError(messages.user.user_not_found, 404);
+        }
+
+        return user;
+    },
 
 }
 

@@ -1,4 +1,4 @@
-import mongoose, { Document, Model } from "mongoose";
+import mongoose, { Model, Types, Document } from "mongoose";
 import bcrypt from 'bcryptjs';
 import { UserRoles } from "../enums/user-roles.enum";
 import CustomError from "../utils/Error";
@@ -38,6 +38,11 @@ const userSchema = new mongoose.Schema<UserDocument>(
             required: false,
             enum: Object.values(UserRoles),
             default: UserRoles.USER,
+        },
+        organizationId: {
+            type: Types.ObjectId,
+            ref: 'Organization',
+            required: false
         },
         isVerified: {
             type: Boolean,
