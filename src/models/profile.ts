@@ -4,6 +4,9 @@ import { Profile } from "../types/profile";
 export interface ProfileDocument extends Document, Profile {
 }
 
+export interface ProfileModel extends Model<ProfileDocument> {
+}
+
 const ProfileSchema = new mongoose.Schema<ProfileDocument>(
     {
         firstname: {
@@ -48,12 +51,12 @@ const ProfileSchema = new mongoose.Schema<ProfileDocument>(
         },
         user: {
             type: String,
-            ref: 'user',
-            required: true,
+            ref: 'User',
+            required: true
         }
     },
 )
 
 
-export const ProfileModel = mongoose.model<ProfileDocument>('profile', ProfileSchema)
+export const ProfileModel = mongoose.model<ProfileDocument, ProfileModel>('profile', ProfileSchema)
 

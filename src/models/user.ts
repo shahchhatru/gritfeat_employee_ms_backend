@@ -4,7 +4,7 @@ import { UserRoles } from "../enums/user-roles.enum";
 import CustomError from "../utils/Error";
 import { User } from "../types/user";
 import cron from 'node-cron';
-import ProfileModel from './profile'
+import { ProfileModel } from './profile'
 export const userPrivateFields = ['password', '__v', 'createdAt', 'updatedAt', 'verifiedAt', 'verificationExpiresAt'];
 
 export interface UserDocument extends Document, User {
