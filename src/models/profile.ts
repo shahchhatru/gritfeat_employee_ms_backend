@@ -1,4 +1,4 @@
-import mongoose, { Model, Types, Document } from "mongoose";
+import mongoose, { Model, Document } from "mongoose";
 import { Profile } from "../types/profile";
 
 export interface ProfileDocument extends Document, Profile {
