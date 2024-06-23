@@ -52,7 +52,8 @@ const ProfileSchema = new mongoose.Schema<ProfileDocument>(
         user: {
             type: Types.ObjectId,
             ref: 'User',
-            required: true
+            required: true,
+            unique: true
         }
     },
 )

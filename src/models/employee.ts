@@ -27,6 +27,7 @@ const employeeSchema = new mongoose.Schema<EmployeeDocument>(
             type: Schema.Types.ObjectId,
             ref: 'User',
             required: true,
+            unique: true,
         },
     },
     {
