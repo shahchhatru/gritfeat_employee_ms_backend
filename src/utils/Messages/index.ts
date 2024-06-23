@@ -99,6 +99,6 @@ export const messages = {
       missing_title: "The Profile must have a non empty title"
     },
     creation_failed: 'Failed to create Profile'
+  }
 
-
-  };
+};
