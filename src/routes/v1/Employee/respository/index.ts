@@ -15,6 +15,10 @@ export const getEmployeeById = (id: string): Promise<EmployeeDocument | null> =>
     return EmployeeModel.findById(id)
 }
 
+export const getEmployeeByUserId = (id: string): Promise<EmployeeDocument | null> => {
+    return EmployeeModel.findOne({ user: id })
+}
+
 export const getEmployeeModelByUserId = (id: string): Promise<EmployeeDocument | null> => {
     return EmployeeModel.findOne({ user: id })
 }

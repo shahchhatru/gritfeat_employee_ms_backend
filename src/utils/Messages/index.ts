@@ -100,5 +100,20 @@ export const messages = {
     },
     creation_failed: 'Failed to create Profile'
   }
+  ,
+  employee: {
+    creation_success: 'Employee Created Successfully',
+    creation_failed: 'Failed to create Employee',
+    all_get_success: 'Employees Fetched Successfully',
+    one_get_success: 'Employee Fetched Successfully',
+    not_found: 'Employee With Given Id Not Found',
+    edit_success: 'Employee Edited Successfully',
+    delete_success: 'Employee Deleted Successfully',
+    edit_forbidden: 'Forbidden To Edit Employee',
+    delete_forbidden: 'Forbidden To Delete Employee',
+    get_rule_success: 'Fetched Employee Update Rule Successfully',
+    author_userId_mismatch: "Trying to Employee using someone else credentials",
+    task_state_update_success: "Employee state updated successfully",
+  }
 
 };
