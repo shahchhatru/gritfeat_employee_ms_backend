@@ -1,5 +1,5 @@
 import { Employee } from "../types/employee";
-import mongoose, { Document, Model, Schema, Types } from "mongoose";
+import mongoose, { Document, Model, Schema } from "mongoose";
 
 export interface EmployeeDocument extends Document, Employee { }
 

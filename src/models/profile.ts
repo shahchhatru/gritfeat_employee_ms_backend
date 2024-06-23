@@ -1,4 +1,4 @@
-import mongoose, { Model, Document } from "mongoose";
+import mongoose, { Model, Document, Types } from "mongoose";
 import { Profile } from "../types/profile";
 
 export interface ProfileDocument extends Document, Profile {
@@ -50,7 +50,7 @@ const ProfileSchema = new mongoose.Schema<ProfileDocument>(
             required: false,
         },
         user: {
-            type: String,
+            type: Types.ObjectId,
             ref: 'User',
             required: true
         }

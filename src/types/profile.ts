@@ -9,5 +9,5 @@ export interface Profile {
     zip?: string;
     says?: string;
     image?: string;
-    user: string;
+    user?: string;
 }
