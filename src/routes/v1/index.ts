@@ -9,6 +9,7 @@ import ActivityRouter from './Activity';
 import CommentRouter from './Comments';
 import OrganizationRouter from './Organizations';
 import ProfileRouter from './Profile'
+import EmployeeRouter from './Employee';
 const router = Router();
 router.use('/health', Health);
 router.use('/users', UserRouter);
@@ -19,6 +20,7 @@ router.use('/activities', ActivityRouter);
 router.use('/comments', CommentRouter);
 router.use('/organizations', OrganizationRouter);
 router.use('/profile', ProfileRouter);
+router.use('/employee', EmployeeRouter);
 /**
  * Import and add your routes here
  * Eg:
