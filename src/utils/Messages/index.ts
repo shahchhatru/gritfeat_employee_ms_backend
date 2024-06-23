@@ -39,6 +39,7 @@ export const messages = {
       missing_content: "Please fill out content in the Task",
       missing_title: "The Task must have a non empty title"
     },
+
   },
   auth: {
     login_success: 'LoggedIn Successfully',
@@ -80,6 +81,24 @@ export const messages = {
   actions: {
     forbidden_message: "You don't have permission to perform this action"
   },
+  profile: {
+    creation_success: 'Profile Created Successfully',
+    all_get_success: 'Profiles Fetched Successfully',
+    one_get_success: 'Profile Fetched Successfully',
+    not_found: 'Profile With Given Id Not Found',
+    edit_success: 'Profile Edited Successfully',
+    delete_success: 'Profile Deleted Successfully',
+    edit_forbidden: 'Forbidden To Edit Profile',
+    delete_forbidden: 'Forbidden To Delete Profile',
+    get_rule_success: 'Fetched Profile Update Rule Successfully',
+    author_userId_mismatch: "Trying to Profile using someone else credentials",
+    task_state_update_success: "Profile state updated successfully",
+    validation: {
+      missing_author: 'Please provide author which exists in database in message body',
+      missing_content: "Please fill out content in the Profile",
+      missing_title: "The Profile must have a non empty title"
+    },
+    creation_failed: 'Failed to create Profile'
 
 
-};
+  };
