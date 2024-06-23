@@ -8,6 +8,7 @@ import TaskRouter from './Task';
 import ActivityRouter from './Activity';
 import CommentRouter from './Comments';
 import OrganizationRouter from './Organizations';
+import ProfileRouter from './Profile'
 const router = Router();
 router.use('/health', Health);
 router.use('/users', UserRouter);
@@ -17,6 +18,7 @@ router.use('/tasks', TaskRouter);
 router.use('/activities', ActivityRouter);
 router.use('/comments', CommentRouter);
 router.use('/organizations', OrganizationRouter);
+router.use('/profile', ProfileRouter);
 /**
  * Import and add your routes here
  * Eg:
