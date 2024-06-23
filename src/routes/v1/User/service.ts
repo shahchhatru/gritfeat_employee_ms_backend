@@ -2,7 +2,7 @@ import CustomError from "../../../utils/Error";
 import { messages } from '../../../utils/Messages';
 import { User } from "../../../types/user"
 import env from "../../../config/env"
-import { createUserRepo, getAllUsers, getAllUsersNameID, getUserByEmail, getUserbyOrganizationID, updateUser } from "./repository";
+import { createUserRepo, deleteUserById, getAllUsers, getAllUsersNameID, getUserByEmail, getUserbyOrganizationID, updateUser } from "./repository";
 import OTPService from "../OTP/service";
 import { sendEmailWithHTML } from "../../../utils/otp";
 const UserService = {
@@ -110,12 +110,13 @@ const UserService = {
 
     async verifyUserwithTemporaryPassword(email: string, password: string, newPassword: string) {
         const user = await getUserByEmail(email);
+        console.log({ user })
         if (!user) {
             throw new CustomError(messages.user.user_not_found, 404);
         }
-        if (user._id) {
-            throw new CustomError(messages.user.user_not_found, 404);
-        }
+        // if (user._id.toString()) {
+        //     throw new CustomError(messages.user.user_not_found, 404);
+        // }
         const ispasswordCorrect = await user.comparePassword(password);
 
         if (!ispasswordCorrect) {
@@ -127,12 +128,32 @@ const UserService = {
 
 
         user.setVerified();
-        const updatedUser = await updateUser(user?._id?.toString() || "", { password: newPassword });
-        if (!updatedUser) {
-            throw new CustomError(messages.user.user_not_found, 404);
-        }
+        user.verifiedAt = new Date().toISOString();
+        user.password = newPassword
+        const updatedUser = await user.save();
         return updatedUser;
     }
+
+    ,
+
+    async deleteUserById(id: string) {
+        const user = deleteUserById(id);
+        if (!user) {
+            throw new CustomError(messages.user.user_not_found, 404);
+        }
+        return user;
+    }
+    ,
+
+
+    async updateUser(id: string, userData: Partial<User>) {
+        const user = await updateUser(id, userData);
+        if (!user) {
+            throw new CustomError(messages.user.user_not_found, 404);
+        }
+        return user;
+    }
+
 
 }
 

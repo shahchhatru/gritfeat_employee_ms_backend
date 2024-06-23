@@ -1,9 +1,9 @@
 import { Response, Request, NextFunction } from 'express';
-
 import { User } from '../../../types/user';
 import UserService from './service';
 import { successResponse } from '../../../utils/HttpResponse';
 import { messages } from '../../../utils/Messages';
+
 
 const UserController = {
   async createUser(req: Request<unknown, unknown, User>, res: Response, next: NextFunction) {
@@ -69,6 +69,22 @@ const UserController = {
       return successResponse({
         response: res,
         message: messages.user.user_found_succes,
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async updateUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id: string = req.params.id;
+      const body = req.body;
+      const result = await UserService.updateUser(id, body);
+
+      return successResponse({
+        response: res,
+        message: messages.user.user_update_succes,
         data: result,
       });
     } catch (error) {

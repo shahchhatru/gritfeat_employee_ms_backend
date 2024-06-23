@@ -11,7 +11,8 @@ export const getAllUsers = (): Promise<UserDocument[]> => {
 };
 
 export const getUserByEmail = (email: string): Promise<UserDocument | null> => {
-  return UserModel.findOne({ email: email });
+  const user = UserModel.findOne({ email: email });
+  return user;
 };
 
 export const getUserById = (id: string): Promise<UserDocument | null> => {
@@ -40,4 +41,8 @@ export const updateUser = async (id: string, userData: Partial<User>): Promise<U
 
 export const getUserbyOrganizationID = async (orgId: string): Promise<UserDocument[]> => {
   return UserModel.find({ organizationId: orgId, role: "admin" })
+}
+
+export const deleteUserById = async (id: string): Promise<UserDocument | null> => {
+  return UserModel.findByIdAndDelete(id);
 }
