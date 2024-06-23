@@ -34,6 +34,8 @@ const OTPService = {
 
 
     }
+
+
     ,
     async generateOrganizationOTP(orgId: string) {
         const otp = await OrgOTPModel.generateOTP(orgId);

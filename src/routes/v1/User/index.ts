@@ -11,7 +11,7 @@ UserRouter.route('/:id').get(UserController.getUser);
 
 // Create new user
 UserRouter.route('/').post(UserController.createUser);
-
+UserRouter.route('/verifytempusers').post(UserController.validateUserWithTemporaryPassword);
 
 
 export default UserRouter;

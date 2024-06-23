@@ -11,7 +11,9 @@ export const messages = {
   user: {
     creation_success: 'User Created Successfully',
     user_not_found: "User Not found",
-    user_found_succes: "Succesfully fetched Users"
+    user_found_succes: "Succesfully fetched Users",
+    user_already_verified: "The following account is an already verified account",
+    invalid_password: "Password or the user is invalid ",
   },
   otp: {
     creation_failed: "there was a problem creating otp",

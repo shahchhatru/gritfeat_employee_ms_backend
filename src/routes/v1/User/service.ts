@@ -2,7 +2,7 @@ import CustomError from "../../../utils/Error";
 import { messages } from '../../../utils/Messages';
 import { User } from "../../../types/user"
 import env from "../../../config/env"
-import { createUserRepo, getAllUsers, getAllUsersNameID, getUserbyOrganizationID } from "./repository";
+import { createUserRepo, getAllUsers, getAllUsersNameID, getUserByEmail, getUserbyOrganizationID, updateUser } from "./repository";
 import OTPService from "../OTP/service";
 import { sendEmailWithHTML } from "../../../utils/otp";
 const UserService = {
@@ -107,6 +107,32 @@ const UserService = {
 
         return user;
     },
+
+    async verifyUserwithTemporaryPassword(email: string, password: string, newPassword: string) {
+        const user = await getUserByEmail(email);
+        if (!user) {
+            throw new CustomError(messages.user.user_not_found, 404);
+        }
+        if (user._id) {
+            throw new CustomError(messages.user.user_not_found, 404);
+        }
+        const ispasswordCorrect = await user.comparePassword(password);
+
+        if (!ispasswordCorrect) {
+            throw new CustomError(messages.user.invalid_password, 401);
+        }
+        if (user?.isVerified) {
+            throw new CustomError(messages.user.user_already_verified, 400);
+        }
+
+
+        user.setVerified();
+        const updatedUser = await updateUser(user?._id?.toString() || "", { password: newPassword });
+        if (!updatedUser) {
+            throw new CustomError(messages.user.user_not_found, 404);
+        }
+        return updatedUser;
+    }
 
 }
 

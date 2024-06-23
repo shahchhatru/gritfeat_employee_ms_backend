@@ -1,4 +1,4 @@
-import { Response, Request ,NextFunction} from 'express';
+import { Response, Request, NextFunction } from 'express';
 
 import { User } from '../../../types/user';
 import UserService from './service';
@@ -6,7 +6,7 @@ import { successResponse } from '../../../utils/HttpResponse';
 import { messages } from '../../../utils/Messages';
 
 const UserController = {
-  async createUser(req: Request<unknown, unknown, User>, res: Response,next:NextFunction) {
+  async createUser(req: Request<unknown, unknown, User>, res: Response, next: NextFunction) {
     try {
       const body = req.body;
       const result = await UserService.createUser(body);
@@ -20,15 +20,15 @@ const UserController = {
     }
   },
 
-  async getUser(req: Request, res: Response,next:NextFunction) {
+  async getUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const id:string=req.params.id;
+      const id: string = req.params.id;
       const result = await UserService.getUser(id)
       return successResponse(
         {
-          response:res,
-          message:messages.user.user_found_succes,
-          data:result,
+          response: res,
+          message: messages.user.user_found_succes,
+          data: result,
         }
       )
     } catch (error) {
@@ -36,7 +36,7 @@ const UserController = {
     }
   },
 
-  async getUsers(req: Request, res: Response,next:NextFunction) {
+  async getUsers(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await UserService.getUsers();
       return successResponse({
@@ -49,7 +49,7 @@ const UserController = {
     }
   },
 
-  async getUsersNameAndID(req: Request, res: Response,next:NextFunction) {
+  async getUsersNameAndID(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await UserService.getAllUsersNameandID();
       return successResponse({
@@ -61,6 +61,20 @@ const UserController = {
       next(error);
     }
   },
+
+  async validateUserWithTemporaryPassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { email, password, newPassword } = req.body;
+      const result = await UserService.verifyUserwithTemporaryPassword(email, password, newPassword);
+      return successResponse({
+        response: res,
+        message: messages.user.user_found_succes,
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 };
 
 export default UserController;
