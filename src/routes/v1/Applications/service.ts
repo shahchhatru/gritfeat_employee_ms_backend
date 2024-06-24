@@ -71,6 +71,8 @@ const ApplicationService = {
         if (!application) throw new CustomError(messages.application.not_found, 404);
         return application;
     }
+
+
 }
 
 

@@ -5,6 +5,8 @@ import env from "../../../config/env"
 import { createUserRepo, deleteUserById, getAllUsers, getAllUsersNameID, getUserByEmail, getUserbyOrganizationID, updateUser } from "./repository";
 import OTPService from "../OTP/service";
 import { sendEmailWithHTML } from "../../../utils/otp";
+import ProfileService from '../Profile/service'
+import EmployeeService from "../Employee/service";
 const UserService = {
     async createUser(userData: User) {
         this.validateEmail(userData.email);
@@ -131,12 +133,15 @@ const UserService = {
         user.verifiedAt = new Date().toISOString();
         user.password = newPassword
         const updatedUser = await user.save();
+        await ProfileService.createProfile({ user: updatedUser._id?.toString() })
         return updatedUser;
     }
 
     ,
 
     async deleteUserById(id: string) {
+        await ProfileService.deleteProfileByUserId(id);
+        await EmployeeService.deleteEmployeeByUserId(id);
         const user = deleteUserById(id);
         if (!user) {
             throw new CustomError(messages.user.user_not_found, 404);
