@@ -54,16 +54,7 @@ const OtpController = {
     async verifyOrganizationOTP(req: Request<{ userId: string }, unknown, { otp: number }>, res: Response, next: NextFunction) {
         const { userId } = req.params;
         const { otp } = req.body;
-        try {// const htmlMessage = `
-            //     <html>
-            //     <body>
-            //         <h1>This is a test HTML email</h1>
-            //         <p>Hello, this is a test email with <strong>HTML content</strong>!</p>
-            //     </body>
-            //     </html>
-            // `;
-
-            // sendEmailWithHTML(htmlMessage);
+        try {
             const result = await OTPService.verifyOrganizationOTP(userId, otp);
             return successResponse({
                 response: res,

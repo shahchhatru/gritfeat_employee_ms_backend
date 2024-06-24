@@ -35,12 +35,32 @@ const organizationSchema = new mongoose.Schema<OrganizationDocument>(
         url: {
             type: String,
             required: false,
-            unique: true,
+            unique: false, // Don't set unique here
+            default: '',
+            validate: {
+                validator: async function (value: string) {
+                    if (value === '') return true; // Allow empty strings
+                    // Check for uniqueness
+                    const count = await mongoose.models.Organization.countDocuments({ url: value });
+                    return count === 0;
+                },
+                message: 'URL already exists'
+            }
         },
         linkedIn: {
             type: String,
             required: false,
-            unique: true,
+            unique: false,
+            default: '',
+            validate: {
+                validator: async function (value: string) {
+                    if (value === '') return true; // Allow empty strings
+                    // Check for uniqueness
+                    const count = await mongoose.models.Organization.countDocuments({ url: value });
+                    return count === 0;
+                },
+                message: 'URL already exists'
+            }
         },
         isVerified: {
             type: Boolean,
@@ -84,7 +104,6 @@ organizationSchema.pre<OrganizationDocument>('save', async function (next) {
 organizationSchema.methods.comparePassword = async function (candidatePassword: string) {
     if (!this.password) throw new CustomError('Invalid password or email', 401);
     return await bcrypt.compare(candidatePassword, this.password);
-
 };
 
 organizationSchema.methods.setVerified = async function () {

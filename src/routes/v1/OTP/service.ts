@@ -5,6 +5,7 @@ import { OTPModel } from "../../../models/otp";
 import { OrgOTPModel } from "../../../models/orgOTP";
 import { OrganizationModel } from "../../../models/organization";
 import UserService from "../User/service";
+import ProfileService from "../Profile/service";
 
 const OTPService = {
     async generateOTP(userId: string) {
@@ -30,7 +31,6 @@ const OTPService = {
         }
         user.setVerified();
         await user.save();
-
 
 
     }
@@ -63,6 +63,9 @@ const OTPService = {
         await org.save();
         user.setVerified();
         await user.save();
+        await ProfileService.createProfile({ user: user._id?.toString() })
+
+
 
         return org;
     }
