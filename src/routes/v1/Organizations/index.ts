@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import OrganizationController from './controller';
+
 const OrganizationRouter = Router();
 
 OrganizationRouter.route('/').get(OrganizationController.getOrganization);

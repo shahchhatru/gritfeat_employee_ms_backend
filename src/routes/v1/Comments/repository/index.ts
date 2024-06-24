@@ -27,8 +27,8 @@ export const getCommentbyId = (id: string): Promise<CommentDocument | null> => {
 }
 
 
-export const getCommentByTaskId = (task: string): Promise<CommentDocument[]> => {
-  return CommentModel.find({ task }).populate('author', '_id name').populate('task', '_id title').exec();
+export const getCommentByTaskId = (application: string): Promise<CommentDocument[]> => {
+  return CommentModel.find({ application }).populate('author', '_id name').populate('task', '_id title').exec();
 }
 
 

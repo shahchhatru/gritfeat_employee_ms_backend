@@ -1,19 +1,19 @@
 
- interface Comment{
-    content:string;
-    author:string;
-    task:string;
+interface Comment {
+    content: string;
+    author: string;
+    application: string;
 }
 
-export interface CommentResponse{
-    content:string;
-    author:{
-        _id:string;
-        name:string;
+export interface CommentResponse {
+    content: string;
+    author: {
+        _id: string;
+        name: string;
     };
-    task:{
-        _id:string;
-        title:string;
+    application: {
+        _id: string;
+        title: string;
     };
 }
 

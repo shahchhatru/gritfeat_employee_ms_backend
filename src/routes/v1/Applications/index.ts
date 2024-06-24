@@ -1,7 +1,10 @@
 import { Router } from 'express';
 import ApplicationController from './controller';
+import deSerializeUser from '../../../middleware/deSerializeUser';
+import requireUser from '../../../middleware/requireUser';
 const ApplicationRouter = Router();
-
+ApplicationRouter.use(deSerializeUser)
+ApplicationRouter.use(requireUser)
 ApplicationRouter.route('/user/:id').get(ApplicationController.getApplicationsByUserId);
 ApplicationRouter.route('/org/:id').get(ApplicationController.getApplicationByOrganizationId);
 ApplicationRouter.route('/supervisor/:id').get(ApplicationController.getApplicationBySupervisorId);
