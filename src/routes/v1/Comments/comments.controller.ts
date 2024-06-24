@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { successResponse } from "../../../utils/HttpResponse";
 import { messages } from "../../../utils/Messages";
 import CommentsService from "./service";
-import ActivityService from "../Activity/service";
 
 const CommentController = {
     async createComment(req: Request, res: Response, next: NextFunction) {
