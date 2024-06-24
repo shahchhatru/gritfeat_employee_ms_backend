@@ -3,9 +3,9 @@ import { ApplicationStatus, ApplicationTypes } from '../enums/application.enum';
 export interface IApplication extends Document {
     text: string;
     type: string;
-    supervisor: mongoose.Types.ObjectId;
-    user: mongoose.Types.ObjectId;
-    organization: mongoose.Types.ObjectId;
+    supervisor?: string;
+    user?: string;
+    organization?: string;
     status: string;
 }
 

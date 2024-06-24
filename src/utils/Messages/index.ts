@@ -1,3 +1,5 @@
+import { application } from "express";
+
 export const messages = {
   organization: {
     createsuccess: 'Organization Created Successfully',
@@ -114,6 +116,21 @@ export const messages = {
     get_rule_success: 'Fetched Employee Update Rule Successfully',
     author_userId_mismatch: "Trying to Employee using someone else credentials",
     task_state_update_success: "Employee state updated successfully",
+  },
+
+  application: {
+    creation_success: 'Application Created Successfully',
+    creation_failed: 'Failed to create Application',
+    all_get_success: 'Applications Fetched Successfully',
+    one_get_success: 'Application Fetched Successfully',
+    not_found: 'Application With Given Id Not Found',
+    edit_success: 'Application Edited Successfully',
+    delete_success: 'Application Deleted Successfully',
+    edit_forbidden: 'Forbidden To Edit Application',
+    delete_forbidden: 'Forbidden To Delete Application',
+    get_rule_success: 'Fetched Application Update Rule Successfully',
+    author_userId_mismatch: "Trying to Application using someone else credentials",
+    application_state_update_success: "Application state updated successfully",
   }
 
 };

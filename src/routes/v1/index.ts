@@ -1,5 +1,4 @@
 import { Router } from 'express';
-
 import Health from './Health';
 import UserRouter from './User';
 import OTPRouter from './OTP';
@@ -10,6 +9,7 @@ import CommentRouter from './Comments';
 import OrganizationRouter from './Organizations';
 import ProfileRouter from './Profile'
 import EmployeeRouter from './Employee';
+import ApplicationRouter from './Applications';
 const router = Router();
 router.use('/health', Health);
 router.use('/users', UserRouter);
@@ -21,6 +21,7 @@ router.use('/comments', CommentRouter);
 router.use('/organizations', OrganizationRouter);
 router.use('/profile', ProfileRouter);
 router.use('/employee', EmployeeRouter);
+router.use('/applications', ApplicationRouter);
 /**
  * Import and add your routes here
  * Eg:
