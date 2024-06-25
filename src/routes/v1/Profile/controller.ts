@@ -39,6 +39,7 @@ const ProfileController = {
         try {
             const user = res.locals.user;
             const body = req.body;
+            console.log({ user, body })
             const result = await ProfileService.updateProfileByUserId(user._id.toString(), body);
             return successResponse({
                 response: res,
