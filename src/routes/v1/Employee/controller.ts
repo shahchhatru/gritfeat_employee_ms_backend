@@ -3,11 +3,15 @@ import { successResponse } from '../../../utils/HttpResponse';
 import { messages } from '../../../utils/Messages';
 import { Employee } from '../../../types/employee';
 import EmployeeService from './service';
+import CustomError from '../../../utils/Error';
 
 const EmployeeController = {
 
     async createEmployee(req: Request<unknown, unknown, Employee>, res: Response, next: NextFunction) {
         try {
+            const user = res.locals.user;
+            if (!user) throw new CustomError(messages.user.user_not_found, 404);
+            if (user.role !== 'ADMIN') throw new CustomError(messages.actions.forbidden_message, 403);
             const body = req.body;
             const result = await EmployeeService.createEmployee(body);
             return successResponse({
