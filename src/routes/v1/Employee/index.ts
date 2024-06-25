@@ -10,4 +10,5 @@ employeeRouter.route('/').post(EmployeeController.createEmployee);
 employeeRouter.route('/:id').get(EmployeeController.getEmployeeById);
 employeeRouter.route('/:id').patch(EmployeeController.updateEmployee);
 employeeRouter.route('/:id').delete(EmployeeController.deleteEmployee);
+employeeRouter.route('/user').post(EmployeeController.createEmployeeWithUser);
 export default employeeRouter

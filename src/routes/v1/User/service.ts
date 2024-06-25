@@ -23,6 +23,16 @@ const UserService = {
 
     },
 
+    async createUserWithValidation(userData: User) {
+        this.validateEmail(userData.email);
+        this.validatePassword(userData.password);
+        if (!userData.organizationId) throw new CustomError(messages.actions.forbidden_message + "Organizaiton Id missing", 403)
+        const data = await createUserRepo({ ...userData, isVerified: true, verifiedAt: new Date().toISOString() });
+        if (!data) throw new CustomError(messages.auth.invalid_account, 403)
+        if (!data._id) throw new CustomError(messages.auth.invalid_account, 403)
+        return data;
+    },
+
     async generateOrgAdnimUser(userData: User) {
         this.validateEmail(userData.email);
         this.validatePassword(userData.password);
