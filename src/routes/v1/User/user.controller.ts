@@ -8,8 +8,11 @@ import { messages } from '../../../utils/Messages';
 const UserController = {
   async createUser(req: Request<unknown, unknown, User>, res: Response, next: NextFunction) {
     try {
+      const user = res.locals.user;
+      if (!user) throw new Error(messages.user.user_not_found);
+      if (user.role !== 'ADMIN') throw new Error(messages.actions.forbidden_message);
       const body = req.body;
-      const result = await UserService.createUser(body);
+      const result = await UserService.createUser({ ...body, organizationId: user.organizationId });
       return successResponse({
         response: res,
         message: messages.user.creation_success,

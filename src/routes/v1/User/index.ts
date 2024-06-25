@@ -1,8 +1,10 @@
 import { Router } from 'express';
 import UserController from './user.controller';
-
+import deSerializeUser from '../../../middleware/deSerializeUser';
+import requireUser from '../../../middleware/requireUser';
 const UserRouter = Router();
-
+UserRouter.use(deSerializeUser);
+UserRouter.use(requireUser);
 // Get All the users
 UserRouter.route('/').get(UserController.getUsers);
 UserRouter.route('/name').get(UserController.getUsersNameAndID);
