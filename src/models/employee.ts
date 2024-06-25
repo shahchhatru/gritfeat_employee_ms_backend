@@ -17,9 +17,9 @@ const employeeSchema = new mongoose.Schema<EmployeeDocument>(
         },
         joiningDate: {
             type: Date,
-            required: false,
+            default: Date.now(),
         },
-        skillLevel: {
+        skills: {
             type: String,
             required: false,
         },

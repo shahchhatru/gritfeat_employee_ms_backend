@@ -2,6 +2,6 @@ export interface Employee {
     designation: string;
     salary: number;
     joiningDate?: string;
-    skillLevel?: string;
+    skills?: string;
     user?: string;
 }
