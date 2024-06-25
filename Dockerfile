@@ -15,8 +15,14 @@ RUN npm run build
 # Stage 2: Create the production image
 FROM node:18-alpine as prod
 
+COPY --from=builder /app/.husky /.husky
+
+COPY --from=builder /app/package.json ./package.json
+
 COPY --from=builder /app/dist ./
 
+# Install dependencies, including husky
+RUN npm install
 
 # Expose port 5000
 EXPOSE 5000

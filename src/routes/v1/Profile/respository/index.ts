@@ -26,7 +26,7 @@ export const getALLProfiles = (): Promise<ProfileDocument[]> => {
 }
 
 export const getProfileByUserId = (id: string) => {
-    return ProfileModel.find({ user: id });
+    return ProfileModel.find({ user: id }).populate('user').exec();
 }
 
 export const updateProfileByUserId = async (id: string, profileData: Partial<Profile>): Promise<ProfileDocument | null> => {
