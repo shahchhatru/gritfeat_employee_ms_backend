@@ -30,6 +30,7 @@ const EmployeeController = {
                 user: created_user_data?._id?.toString(),
                 skills: body.skills,
                 joiningDate: body.joiningDate || new Date().toISOString(),
+                organizationId: user.organizationId
 
             }
 
@@ -39,6 +40,7 @@ const EmployeeController = {
                 response: res,
                 message: messages.employee.creation_success,
                 data: result,
+                status: 201
             });
         } catch (error) {
             next(error);
@@ -57,6 +59,7 @@ const EmployeeController = {
                 response: res,
                 message: messages.employee.creation_success,
                 data: result,
+                status: 201
             });
         } catch (error) {
             next(error);
@@ -71,6 +74,7 @@ const EmployeeController = {
                     response: res,
                     message: messages.employee.all_get_success,
                     data: result,
+                    status: 200
                 }
             )
         } catch (error) {
@@ -79,11 +83,15 @@ const EmployeeController = {
     },
     async getALLEmployees(req: Request, res: Response, next: NextFunction) {
         try {
-            const result = await EmployeeService.getALLEmployees();
+            const user = res.locals.user;
+            if (user.role !== 'ADMIN') throw new CustomError(messages.actions.forbidden_message, 403);
+            if (!user.organizationId) throw new CustomError(messages.user.user_not_found, 404);
+            const result = await EmployeeService.getALLEmployees(user.organizationId);
             return successResponse({
                 response: res,
                 message: messages.employee.all_get_success,
                 data: result,
+                status: 200
             });
         } catch (error) {
             next(error);
@@ -98,6 +106,7 @@ const EmployeeController = {
                 response: res,
                 message: messages.employee.edit_success,
                 data: result,
+                status: 200
             });
         } catch (error) {
             next(error);
@@ -112,6 +121,7 @@ const EmployeeController = {
                 response: res,
                 message: messages.employee.delete_success,
                 data: result,
+                status: 200
             });
         } catch (error) {
             next(error);

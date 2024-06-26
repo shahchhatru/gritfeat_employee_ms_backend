@@ -4,6 +4,7 @@ export interface Employee {
     joiningDate?: string;
     skills?: string;
     user?: string;
+    organizationId?: string;
 }
 
 export interface EmployeeWithUser {
@@ -16,4 +17,22 @@ export interface EmployeeWithUser {
     role?: string;
     password: string;
 
+}
+
+export interface EmployeeWithUserObject {
+    _id: string;
+    name: string;
+    email: string;
+    user: User;
+    organizationId?: string;
+
+}
+
+export interface User {
+    _id: string;
+    name: string;
+    email: string;
+    role: string;
+    organizationId: string;
+    isVerified: boolean;
 }

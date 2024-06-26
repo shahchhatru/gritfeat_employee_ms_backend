@@ -29,6 +29,12 @@ const employeeSchema = new mongoose.Schema<EmployeeDocument>(
             required: true,
             unique: true,
         },
+        organizationId: {
+            type: Schema.Types.ObjectId,
+            ref: 'Organization',
+            required: false,
+            unique: false,
+        }
     },
     {
         timestamps: true,

@@ -7,12 +7,16 @@ export const createEmployeeRepo = (employeeData: Employee): Promise<EmployeeDocu
 }
 
 
-export const getAllEmployees = (): Promise<EmployeeDocument[]> => {
-    return EmployeeModel.find({})
-}
+export const getAllEmployees = async (orgId: string): Promise<EmployeeDocument[]> => {
+    return EmployeeModel.find({ organizationId: orgId }).populate('user').exec();
+};
 
 export const getEmployeeById = (id: string): Promise<EmployeeDocument | null> => {
     return EmployeeModel.findById(id)
+}
+
+export const getAllEmployeesByOrganization = (): Promise<EmployeeDocument[]> => {
+    return EmployeeModel.find({})
 }
 
 export const getEmployeeByUserId = (id: string): Promise<EmployeeDocument | null> => {

@@ -29,8 +29,8 @@ const EmployeeService = {
         }
         return employee;
     },
-    async getALLEmployees() {
-        const employees = await getAllEmployees();
+    async getALLEmployees(orgId: string) {
+        const employees = await getAllEmployees(orgId);
         if (!employees) {
             throw new CustomError(messages.employee.not_found, 404);
         }
