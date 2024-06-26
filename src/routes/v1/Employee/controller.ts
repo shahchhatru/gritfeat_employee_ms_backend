@@ -101,12 +101,16 @@ const EmployeeController = {
         try {
             const id: string = req.params.id;
             const body = req.body;
-            const result = await EmployeeService.updateEmployeeByUserId(id, body);
+            const user = res.locals.user;
+            if (!user._id) throw new CustomError(messages.user.user_not_found, 404);
+            if (!user.organizationId) throw new CustomError(messages.user.user_not_found, 404);
+            if (user.role !== 'ADMIN') throw new CustomError(messages.actions.forbidden_message, 403);
+            const result = await EmployeeService.updateEmployeeByUserId(id, { ...body, organizationId: user.organizationId });
             return successResponse({
                 response: res,
                 message: messages.employee.edit_success,
                 data: result,
-                status: 200
+                status: 201
             });
         } catch (error) {
             next(error);

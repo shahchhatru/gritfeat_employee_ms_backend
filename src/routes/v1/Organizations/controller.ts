@@ -15,6 +15,7 @@ const OrganizationController = {
                 response: res,
                 message: messages.organization.createsuccess,
                 data: result,
+                status: 201
             });
         } catch (error) {
             next(error);
@@ -40,6 +41,7 @@ const OrganizationController = {
                 response: res,
                 message: messages.organization.fetch_success,
                 data: result,
+                status: 200
             });
         } catch (error) {
             next(error);
@@ -54,6 +56,7 @@ const OrganizationController = {
                 response: res,
                 message: messages.organization.delete_success,
                 data: result,
+                status: 200,
             });
         } catch (error) {
             next(error);
@@ -70,6 +73,7 @@ const OrganizationController = {
                 response: res,
                 message: messages.organization.update_success,
                 data: result,
+                status: 203
             });
         } catch (error) {
             next(error);
