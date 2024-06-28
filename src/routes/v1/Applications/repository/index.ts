@@ -23,7 +23,7 @@ export const getAllApplications = (): Promise<IApplication[]> => {
 }
 
 export const getApplicationBySupervisorId = (supervisorId: string): Promise<IApplication[]> => {
-    return ApplicationModel.find({ supervisor: supervisorId }).exec();
+    return ApplicationModel.find({ supervisor: supervisorId }).populate('user').exec();
 }
 
 export const getApplicationById = (id: string): Promise<IApplication | null> => {
@@ -31,9 +31,9 @@ export const getApplicationById = (id: string): Promise<IApplication | null> => 
 }
 
 export const getApplicationByOrganizationId = (organizationId: string): Promise<IApplication[]> => {
-    return ApplicationModel.find({ organization: organizationId }).exec();
+    return ApplicationModel.find({ organization: organizationId }).populate('user').populate('supervisor').exec();
 }
 
 export const getApplicationByUserId = (userId: string): Promise<IApplication[]> => {
-    return ApplicationModel.find({ user: userId }).exec();
+    return ApplicationModel.find({ user: userId }).populate('supervisor').exec();
 }
