@@ -12,7 +12,7 @@ const ApplicationController = {
             if (!user) throw new CustomError(messages.user.user_not_found, 404)
             if (!user._id) throw new CustomError(messages.user.user_not_found, 404)
             const body = req.body;
-            const result = await ApplicationService.createApplication({ ...body, user: user._id });
+            const result = await ApplicationService.createApplication({ ...body, user: user._id, organization: user.organizationId });
             return successResponse({
                 response: res,
                 message: messages.application.creation_success,
@@ -97,6 +97,24 @@ const ApplicationController = {
             if (user.role !== 'ADMIN') throw new CustomError(messages.actions.forbidden_message, 404)
             if (user.organizationId.toString() !== id) throw new CustomError(messages.actions.forbidden_message, 404)
             const result = await ApplicationService.getApplicationByOrganizationId(id);
+            return successResponse({
+                response: res,
+                message: messages.application.all_get_success,
+                data: result,
+                status: 200
+            })
+        } catch (error) {
+            next(error);
+        }
+
+    },
+    async getApplicationByOrganization(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            const user = res.locals.user;
+            if (user.role !== 'ADMIN') throw new CustomError(messages.actions.forbidden_message, 404)
+
+            const result = await ApplicationService.getApplicationByOrganizationId(user.organizationId.toString());
             return successResponse({
                 response: res,
                 message: messages.application.all_get_success,

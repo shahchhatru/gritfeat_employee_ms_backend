@@ -7,6 +7,7 @@ ApplicationRouter.use(deSerializeUser)
 ApplicationRouter.use(requireUser)
 ApplicationRouter.route('/user/:id').get(ApplicationController.getApplicationsByUserId);
 ApplicationRouter.route('/org/:id').get(ApplicationController.getApplicationByOrganizationId);
+ApplicationRouter.route('/org').get(ApplicationController.getApplicationByOrganization);
 ApplicationRouter.route('/supervisor/:id').get(ApplicationController.getApplicationBySupervisorId);
 ApplicationRouter.route('/').post(ApplicationController.createApplication);
 ApplicationRouter.route('/:id').post(ApplicationController.editApplication);
