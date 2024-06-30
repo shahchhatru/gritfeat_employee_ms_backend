@@ -26,14 +26,24 @@ const ApplicationController = {
 
     async updateStatus(req: Request, res: Response, next: NextFunction) {
         try {
+            const id = req.params.id;
+            // console.log(req.params)
             const user = res.locals.user;
             if (!user) throw new CustomError(messages.user.user_not_found, 404)
             if (!user._id) throw new CustomError(messages.user.user_not_found, 404)
-            if (user.role !== 'supervisor') throw new CustomError(messages.application.edit_forbidden, 404)
+            // console.log(`req.body`, req.body);
+            // console.log(`user`, user);
+            if (user.role !== 'SUPERVISOR') {
+                if (user.role !== 'ADMIN') {
+                    throw new CustomError(messages.application.edit_forbidden, 404);
+                }
+
+            }
+            // console.log(`req.user`, user);
             const body = req.body;
-            const application = await ApplicationService.getApplicationById(body.id);
+            const application = await ApplicationService.getApplicationById(id);
             if (application.supervisor?.toString() !== user._id) throw new CustomError(messages.user.user_not_found, 404)
-            const result = await ApplicationService.updateApplication(body.id, { status: body.status });
+            const result = await ApplicationService.updateApplication(id, { status: body.status });
             return successResponse({
                 response: res,
                 message: messages.application.edit_success,
