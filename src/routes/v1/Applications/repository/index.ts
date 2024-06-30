@@ -31,7 +31,7 @@ export const getApplicationById = (id: string): Promise<IApplication | null> => 
 }
 
 export const getApplicationByOrganizationId = (organizationId: string): Promise<IApplication[]> => {
-    return ApplicationModel.find({ organization: organizationId }).populate('user').populate('supervisor').exec();
+    return ApplicationModel.find({ organization: organizationId }).populate('user', '_id name role').populate('supervisor', '_id name role').exec();
 }
 
 export const getApplicationByUserId = (userId: string): Promise<IApplication[]> => {
