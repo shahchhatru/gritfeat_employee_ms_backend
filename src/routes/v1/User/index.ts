@@ -7,6 +7,8 @@ UserRouter.use(deSerializeUser);
 UserRouter.use(requireUser);
 // Get All the users
 UserRouter.route('/').get(UserController.getUsers);
+UserRouter.route('/all').get(UserController.getAllUserByOrganizationID);
+
 UserRouter.route('/name').get(UserController.getUsersNameAndID);
 // Get one user
 UserRouter.route('/:id').get(UserController.getUser);
@@ -15,7 +17,6 @@ UserRouter.route('/:id').get(UserController.getUser);
 UserRouter.route('/').post(UserController.createUser);
 UserRouter.route('/verifytempusers').post(UserController.validateUserWithTemporaryPassword);
 UserRouter.patch('/:id', UserController.updateUser);
-UserRouter.route('/all').delete(UserController.getAllUserByOrganizationID);
 
 
 export default UserRouter;
