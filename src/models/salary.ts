@@ -53,5 +53,7 @@ const SalarySchema = new mongoose.Schema({
     timestamps: true
 });
 
-export const SalaryModel = mongoose.model<SalaryDocument>('Salary', SalarySchema)
+// Add a unique index on user, month, and year fields
+SalarySchema.index({ user: 1, month: 1, year: 1 }, { unique: true });
 
+export const SalaryModel = mongoose.model<SalaryDocument>('Salary', SalarySchema);

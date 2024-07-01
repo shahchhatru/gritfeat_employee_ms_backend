@@ -132,6 +132,10 @@ export const messages = {
     get_rule_success: 'Fetched Application Update Rule Successfully',
     author_userId_mismatch: "Trying to Application using someone else credentials",
     application_state_update_success: "Application state updated successfully",
+  },
+  salary: {
+    creation_success: 'Salary Reciept Storedd Successfully in database',
+    creation_failed: 'Failed to create Salary Reciept',
   }
 
 };
