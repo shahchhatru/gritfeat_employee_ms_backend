@@ -4,4 +4,7 @@ export interface Salary {
     tax: number;
     pf: number;
     netAmount: number;
+    user: string;
+    month: string;
+    year: string;
 } 

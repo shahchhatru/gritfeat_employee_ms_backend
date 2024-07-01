@@ -1,5 +1,6 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 import { Salary } from '../types/salary';
+import { Month } from '../enums/month.enum';
 
 export interface SalaryDocument extends Document, Salary {
 }
@@ -28,6 +29,20 @@ const SalarySchema = new mongoose.Schema({
         type: Number,
         default: 0,
         required: false
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    month: {
+        type: String,
+        required: true,
+        enum: Object.values(Month)
+    },
+    year: {
+        type: String,
+        required: true
     }
 }, {
     timestamps: true
