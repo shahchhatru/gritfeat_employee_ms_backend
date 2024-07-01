@@ -15,6 +15,7 @@ UserRouter.route('/:id').get(UserController.getUser);
 UserRouter.route('/').post(UserController.createUser);
 UserRouter.route('/verifytempusers').post(UserController.validateUserWithTemporaryPassword);
 UserRouter.patch('/:id', UserController.updateUser);
+UserRouter.route('/all').delete(UserController.getAllUserByOrganizationID);
 
 
 export default UserRouter;

@@ -2,7 +2,7 @@ import CustomError from "../../../utils/Error";
 import { messages } from '../../../utils/Messages';
 import { User } from "../../../types/user"
 import env from "../../../config/env"
-import { createUserRepo, deleteUserById, getAllUsers, getAllUsersNameID, getUserByEmail, getUserbyOrganizationID, updateUser } from "./repository";
+import { createUserRepo, deleteUserById, getAllUsers, getAllUsersNameID, getUserByEmail, getUserbyOrganizationID, updateUser, getAllUserByOrganizationID } from "./repository";
 import OTPService from "../OTP/service";
 import { sendEmailWithHTML } from "../../../utils/otp";
 import ProfileService from '../Profile/service'
@@ -167,7 +167,14 @@ const UserService = {
             throw new CustomError(messages.user.user_not_found, 404);
         }
         return user;
+    },
+
+
+    async getallUserbyOrganizationID(orgId: string) {
+        const user = await getAllUserByOrganizationID(orgId);
+        return user;
     }
+
 
 
 }

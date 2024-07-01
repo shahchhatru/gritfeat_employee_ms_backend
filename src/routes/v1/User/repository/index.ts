@@ -46,3 +46,7 @@ export const getUserbyOrganizationID = async (orgId: string): Promise<UserDocume
 export const deleteUserById = async (id: string): Promise<UserDocument | null> => {
   return UserModel.findByIdAndDelete(id);
 }
+
+export const getAllUserByOrganizationID = async (orgId: string): Promise<UserDocument[]> => {
+  return UserModel.find({ organizationId: orgId })
+}

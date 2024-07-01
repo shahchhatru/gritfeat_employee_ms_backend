@@ -17,6 +17,7 @@ export const messages = {
     user_already_verified: "The following account is an already verified account",
     invalid_password: "Password or the user is invalid ",
     user_update_succes: "User updated successfully",
+    dooes_not_belong: "User does not belong to the organization",
   },
   month: {
     not_found: "month not found"

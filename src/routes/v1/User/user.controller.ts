@@ -3,6 +3,7 @@ import { User } from '../../../types/user';
 import UserService from './service';
 import { successResponse } from '../../../utils/HttpResponse';
 import { messages } from '../../../utils/Messages';
+import { getAllUserByOrganizationID } from './repository';
 
 
 const UserController = {
@@ -88,6 +89,23 @@ const UserController = {
       return successResponse({
         response: res,
         message: messages.user.user_update_succes,
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  ,
+
+  async getAllUserByOrganizationID(req: Request, res: Response, next: NextFunction) {
+    try {
+      const user = res.locals.user;
+      if (!user.organizationId) throw new Error(messages.user.dooes_not_belong);
+      const result = await getAllUserByOrganizationID(user.organizationId.toString());
+
+      return successResponse({
+        response: res,
+        message: 'Fetched Users successfully',
         data: result,
       });
     } catch (error) {
