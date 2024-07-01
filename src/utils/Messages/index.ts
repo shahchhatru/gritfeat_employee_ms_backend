@@ -18,6 +18,12 @@ export const messages = {
     invalid_password: "Password or the user is invalid ",
     user_update_succes: "User updated successfully",
   },
+  month: {
+    not_found: "month not found"
+  },
+  year: {
+    missing_entity: "year field is missing from query",
+  },
   otp: {
     creation_failed: "there was a problem creating otp",
     success: "OTP was successfully created",
@@ -136,6 +142,9 @@ export const messages = {
   salary: {
     creation_success: 'Salary Reciept Storedd Successfully in database',
     creation_failed: 'Failed to create Salary Reciept',
+    fetch_success: "Sucessfully fetched data",
+    edit_success: 'Salary Reciept Edited Successfully',
+    organization_fail: "Salary related to organization can't be found"
   }
 
 };

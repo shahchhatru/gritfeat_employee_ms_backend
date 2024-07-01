@@ -10,6 +10,7 @@ import OrganizationRouter from './Organizations';
 import ProfileRouter from './Profile'
 import EmployeeRouter from './Employee';
 import ApplicationRouter from './Applications';
+import SalaryRouter from './Salary';
 const router = Router();
 router.use('/health', Health);
 router.use('/users', UserRouter);
@@ -22,6 +23,7 @@ router.use('/organizations', OrganizationRouter);
 router.use('/profile', ProfileRouter);
 router.use('/employee', EmployeeRouter);
 router.use('/applications', ApplicationRouter);
+router.use('/salary', SalaryRouter);
 /**
  * Import and add your routes here
  * Eg:
