@@ -1,5 +1,5 @@
 import CustomError from '../../../utils/Error';
-import { getUserByEmail,getUserById } from '../User/repository';
+import { getUserByEmail, getUserById } from '../User/repository';
 import { Auth, RefreshTokenPayloadType } from '../../../types/auth';
 import { messages } from '../../../utils/Messages';
 import { generateToken, signJwt, verifyJwt, verifyToken } from '../../../utils/Jwt';
@@ -12,12 +12,12 @@ const AuthService = {
   async login(data: Auth) {
     const user = await getUserByEmail(data.email);
     if (!user) throw new CustomError(messages.auth.invalid_account, 401);
-    if(!user._id) throw new CustomError(messages.auth.userId_not_found,401);
+    if (!user._id) throw new CustomError(messages.auth.userId_not_found, 401);
     const isValid = await user.comparePassword(data.password);
     if (!isValid) throw new CustomError(messages.auth.invalid_account, 401);
 
     const accessToken = signJwt(omit(user.toJSON(), userPrivateFields), 'accessToken', { expiresIn: '7d' });
-    
+
     const refreshToken = signJwt({ userId: user._id.toString() }, 'refreshToken', { expiresIn: '30d' });
 
     return {
@@ -30,15 +30,15 @@ const AuthService = {
     const user = verifyJwt(token, type);
     console.log(user);
     return user;
-    
+
   },
 
-  async generateNewToken(token:string){
-   const payload:RefreshTokenPayloadType|any =await this.verifyToken(token,'refreshToken');
-   if(!payload) throw new CustomError(messages.auth.auth_token_expired,401);
+  async generateNewToken(token: string) {
+    const payload: RefreshTokenPayloadType | any = await this.verifyToken(token, 'refreshToken');
+    if (!payload) throw new CustomError(messages.auth.auth_token_expired, 401);
     const user = await getUserById(payload.userId)
     if (!user) throw new CustomError(messages.auth.invalid_user_id, 401);
-    if(!user._id) throw new CustomError(messages.auth.userId_not_found,401);
+    if (!user._id) throw new CustomError(messages.auth.userId_not_found, 401);
     const accessToken = signJwt(omit(user.toJSON(), userPrivateFields), 'accessToken', { expiresIn: '7d' });
     const refreshToken = signJwt({ userId: user._id.toString() }, 'refreshToken', { expiresIn: '30d' });
 
@@ -46,8 +46,8 @@ const AuthService = {
       accessToken,
       refreshToken,
     };
-   
-   
+
+
   },
 
   async generatePasswordResetLink(email: string) {
@@ -57,7 +57,7 @@ const AuthService = {
     }
 
     const token = generateToken({ userId: user._id }, '1h'); // Generate token valid for 1 hour
-    const resetLink = `${process.env.FRONTEND_URL}/login/reset-password?token=${token}`;
+    const resetLink = `${process.env.FRONTEND_URL}/auth/resetpassword/${token}`;
 
     // Send email with reset link
     // await MailService.sendMail({
@@ -65,13 +65,13 @@ const AuthService = {
     //   subject: 'Password Reset Request',
     //   text: `You requested a password reset. Click the link to reset your password: ${resetLink}`,
     // });
-    await sendEmailWithHTML(`You requested a password reset. Click the link to reset your password: ${resetLink}`,user.email,"Password Reset Request");
+    await sendEmailWithHTML(`You requested a password reset. Click the link to reset your password: ${resetLink}`, user.email, "Password Reset Request");
 
     return { message: 'Password reset link sent successfully.' };
   }
   ,
 
- async resetPassword(token: string, newPassword: string) {
+  async resetPassword(token: string, newPassword: string) {
     const payload = verifyToken(token);
     if (!payload || typeof payload === 'string' || !payload.userId) {
       throw new Error('Invalid or expired token.');
@@ -88,6 +88,22 @@ const AuthService = {
 
     return { message: 'Password reset successfully.' };
   }
+  ,
+  async changePassword(userId: string, oldPassword: string, newPassword: string) {
+    const user = await getUserById(userId);
+    if (!user) throw new CustomError(messages.auth.invalid_user_id, 401);
+    if (!user._id) throw new CustomError(messages.auth.userId_not_found, 401);
+
+    const isValid = await user.comparePassword(oldPassword);
+    if (!isValid) throw new CustomError(messages.auth.invalid_old_password, 401);
+
+    user.password = newPassword;
+    await user.save();
+
+    return { message: 'Password changed successfully.' };
+  }
+
+
 
 };
 

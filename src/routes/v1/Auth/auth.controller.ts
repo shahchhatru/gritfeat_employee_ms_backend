@@ -72,6 +72,22 @@ const AuthController = {
 
   ,
 
+  async changePassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { oldPassword, newPassword } = req.body;
+      const userId = res.locals.user._id.toString();
+      const result = await AuthService.changePassword(userId, oldPassword, newPassword);
+      return successResponse({
+        status: 200,
+        response: res,
+        message: messages.auth.password_reset_success,
+        data: result,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
 
 };
 

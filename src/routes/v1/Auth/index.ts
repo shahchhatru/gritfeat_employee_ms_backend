@@ -7,6 +7,7 @@ const AuthRouter = Router();
 AuthRouter.route('/login').post(AuthController.login);
 AuthRouter.route('/refresh').post(AuthController.genRefreshToken);
 AuthRouter.route('/sendresetlink').post(AuthController.generatePasswordResetLink);
-AuthRouter.route('/resetpassword').post(AuthController.resetPassword)
+AuthRouter.route('/resetpassword').post(AuthController.resetPassword);
+AuthRouter.route('/changepassword').post(AuthController.changePassword);
 
 export default AuthRouter;

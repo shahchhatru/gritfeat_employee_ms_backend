@@ -51,7 +51,8 @@ export const messages = {
     invalid_user_id: "the user probably doesn't exits",
     userId_not_found: "the user id not found",
     password_reset_link_success: 'Password reset link sent successfully.',
-    password_reset_success: 'Passwozd reset successfully. Please login with new password. The password reset successfully.'
+    password_reset_success: 'Passwozd reset successfully. Please login with new password. The password reset successfully.',
+    invalid_old_password: "Invalid old password. Please try again",
   },
   error: {
     internal_server_error: 'Internal Server Error',
