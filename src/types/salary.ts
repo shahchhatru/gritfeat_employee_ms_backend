@@ -7,4 +7,5 @@ export interface Salary {
     user: string;
     month: string;
     year: string;
+    organization: string;
 } 

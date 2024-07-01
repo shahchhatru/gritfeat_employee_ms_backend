@@ -43,6 +43,11 @@ const SalarySchema = new mongoose.Schema({
     year: {
         type: String,
         required: true
+    },
+    organization: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Organization',
+        required: true
     }
 }, {
     timestamps: true
