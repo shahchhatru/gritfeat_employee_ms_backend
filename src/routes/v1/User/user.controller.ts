@@ -107,6 +107,7 @@ const UserController = {
         response: res,
         message: 'Fetched Users successfully',
         data: result,
+        status: 200,
       });
     } catch (error) {
       next(error);
