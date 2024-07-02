@@ -131,6 +131,91 @@ const EmployeeController = {
             next(error);
         }
     }
-}
+    ,
+    async addBonusAmountByUserId(req: Request, res: Response, next: NextFunction) {
+        try {
+            const user = res.locals.user;
+            if (user.role !== 'ADMIN' || user.role !== 'SUPERVISOR') {
+                throw new CustomError(messages.actions.forbidden_message + "Only Admin or supervisor can do this task", 403);
+            }
+            const userId: string = req.params.userId;
+            const { bonusAmount } = req.body;
+            if (!bonusAmount || typeof bonusAmount !== 'string') {
+                throw new CustomError('Invalid bonus amount', 400);
+            }
+            const result = await EmployeeService.addBonusAmountByUserId(userId, bonusAmount);
+            return successResponse({
+                response: res,
+                message: 'Bonus amount added successfully',
+                data: result,
+                status: 200
+            });
+        } catch (error) {
+            next(error);
+        }
+    },
+
+    async removeBonusAmountByUserId(req: Request, res: Response, next: NextFunction) {
+        try {
+            const user = res.locals.user;
+            if (user.role !== 'ADMIN' || user.role !== 'SUPERVISOR') {
+                throw new CustomError(messages.actions.forbidden_message, 403);
+            }
+            const userId: string = req.params.userId;
+            const { bonusAmount } = req.body;
+            if (!bonusAmount || typeof bonusAmount !== 'string') {
+                throw new CustomError('Invalid bonus amount', 400);
+            }
+            const result = await EmployeeService.removeBonusAmountByUserId(userId, bonusAmount);
+            return successResponse({
+                response: res,
+                message: 'Bonus amount removed successfully',
+                data: result,
+                status: 200
+            });
+        } catch (error) {
+            next(error);
+        }
+    },
+    async getTotalBonusAmountByUserId(req: Request, res: Response, next: NextFunction) {
+        try {
+
+            const userId: string = req.params.userId;
+            const result = await EmployeeService.getTotalBonusAmountByUserId(userId);
+            return successResponse({
+                response: res,
+                message: 'Total bonus amount retrieved successfully',
+                data: { totalBonus: result },
+                status: 200
+            });
+        } catch (error) {
+            next(error);
+        }
+    },
+
+    async clearBonusArrayByUserId(req: Request, res: Response, next: NextFunction) {
+        try {
+            const user = res.locals.user;
+            if (user.role !== 'ADMIN' || user.role !== 'SUPERVISOR') {
+                throw new CustomError(messages.actions.forbidden_message + "Only Admin or supervisor can do this task", 403);
+            }
+            const userId: string = req.params.userId;
+            const result = await EmployeeService.clearBonusArrayByUserId(userId);
+            return successResponse({
+                response: res,
+                message: 'Bonus array cleared successfully',
+                data: result,
+                status: 200
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+};
+
+
+
+
+
 
 export default EmployeeController;

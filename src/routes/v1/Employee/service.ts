@@ -1,7 +1,11 @@
 import CustomError from "../../../utils/Error";
 import { messages } from "../../../utils/Messages";
 import { Employee } from "../../../types/employee";
-import { createEmployeeRepo, getEmployeeById, getEmployeeByUserId, getAllEmployees, updateEmployeeByUserId, deleteEmployeeByUserId } from './respository';
+import {
+    createEmployeeRepo, getEmployeeById, getEmployeeByUserId, getAllEmployees, updateEmployeeByUserId, deleteEmployeeByUserId, removeBonusAmount,
+    clearBonusArrayByUserId, addBonusAmount,
+    getTotalBonusAmount
+} from './respository';
 
 
 const EmployeeService = {
@@ -51,7 +55,63 @@ const EmployeeService = {
             throw new CustomError(messages.employee.not_found, 404);
         }
         return employee;
+    },
+    async getTotalBonusAmountByUserId(userId: string) {
+        const employee = await getEmployeeByUserId(userId);
+        if (!employee) {
+            throw new CustomError(messages.employee.not_found, 404);
+        }
+        if (!employee._id) {
+            throw new CustomError(messages.employee.not_found, 404);
+        }
+
+        const totalBonus = await getTotalBonusAmount(employee._id.toString());
+        return totalBonus;
+    },
+
+    async addBonusAmountByUserId(userId: string, bonusAmount: string) {
+        const employee = await getEmployeeByUserId(userId);
+        if (!employee) {
+            throw new CustomError(messages.employee.not_found, 404);
+        }
+
+        const updatedEmployee = await addBonusAmount(employee?._id?.toString() || '', bonusAmount);
+        if (!updatedEmployee) {
+            throw new CustomError(messages.employee.bounus_update_failed, 500);
+        }
+
+        return updatedEmployee;
+    },
+
+    async removeBonusAmountByUserId(userId: string, bonusAmount: string) {
+        const employee = await getEmployeeByUserId(userId);
+        if (!employee) {
+            throw new CustomError(messages.employee.not_found, 404);
+        }
+
+        const updatedEmployee = await removeBonusAmount(employee?._id?.toString() || '', bonusAmount);
+        if (!updatedEmployee) {
+            throw new CustomError(messages.employee.bounus_update_failed, 500);
+        }
+
+        return updatedEmployee;
+    },
+
+    async clearBonusArrayByUserId(userId: string) {
+        const employee = await getEmployeeByUserId(userId);
+        if (!employee) {
+            throw new CustomError(messages.employee.not_found, 404);
+        }
+
+
+        const updatedEmployee = await clearBonusArrayByUserId(userId);
+        if (!updatedEmployee) {
+            throw new CustomError(messages.employee.all_bounus_cleared, 500);
+        }
+
+        return updatedEmployee;
     }
+
 }
 
 

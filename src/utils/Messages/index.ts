@@ -124,6 +124,9 @@ export const messages = {
     get_rule_success: 'Fetched Employee Update Rule Successfully',
     author_userId_mismatch: "Trying to Employee using someone else credentials",
     task_state_update_success: "Employee state updated successfully",
+    bounus_update_failed: "Unable to update bonus",
+    bonus_added_success: "Bonus successfully added",
+    all_bounus_cleared: "All bonuses cleared successfully",
   },
 
   application: {
