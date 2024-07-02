@@ -135,8 +135,12 @@ const EmployeeController = {
     async addBonusAmountByUserId(req: Request, res: Response, next: NextFunction) {
         try {
             const user = res.locals.user;
-            if (user.role !== 'ADMIN' || user.role !== 'SUPERVISOR') {
-                throw new CustomError(messages.actions.forbidden_message + "Only Admin or supervisor can do this task", 403);
+            console.log({ user })
+            if (user.role !== 'ADMIN') {
+                if (user.role !== 'SUPERVISOR') {
+                    throw new CustomError(messages.actions.forbidden_message + "Only Admin or supervisor can do this task", 403);
+                }
+
             }
             const userId: string = req.params.userId;
             const { bonusAmount } = req.body;
@@ -158,8 +162,11 @@ const EmployeeController = {
     async removeBonusAmountByUserId(req: Request, res: Response, next: NextFunction) {
         try {
             const user = res.locals.user;
-            if (user.role !== 'ADMIN' || user.role !== 'SUPERVISOR') {
-                throw new CustomError(messages.actions.forbidden_message, 403);
+            if (user.role !== 'ADMIN') {
+                if (user.role !== 'SUPERVISOR') {
+                    throw new CustomError(messages.actions.forbidden_message + "Only Admin or supervisor can do this task", 403);
+                }
+
             }
             const userId: string = req.params.userId;
             const { bonusAmount } = req.body;
@@ -196,8 +203,11 @@ const EmployeeController = {
     async clearBonusArrayByUserId(req: Request, res: Response, next: NextFunction) {
         try {
             const user = res.locals.user;
-            if (user.role !== 'ADMIN' || user.role !== 'SUPERVISOR') {
-                throw new CustomError(messages.actions.forbidden_message + "Only Admin or supervisor can do this task", 403);
+            if (user.role !== 'ADMIN') {
+                if (user.role !== 'SUPERVISOR') {
+                    throw new CustomError(messages.actions.forbidden_message + "Only Admin or supervisor can do this task", 403);
+                }
+
             }
             const userId: string = req.params.userId;
             const result = await EmployeeService.clearBonusArrayByUserId(userId);
