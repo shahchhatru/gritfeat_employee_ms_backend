@@ -34,7 +34,11 @@ const employeeSchema = new mongoose.Schema<EmployeeDocument>(
             ref: 'Organization',
             required: false,
             unique: false,
-        }
+        },
+        bonus: [{
+            type: String,
+            required: false,
+        }],
     },
     {
         timestamps: true,

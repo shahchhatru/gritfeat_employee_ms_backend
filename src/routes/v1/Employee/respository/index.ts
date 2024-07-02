@@ -43,3 +43,62 @@ export const deleteEmployeeById = async (id: string): Promise<EmployeeDocument |
 export const deleteEmployeeByUserId = async (id: string): Promise<EmployeeDocument | null> => {
     return EmployeeModel.findOneAndDelete({ user: id })
 }
+
+
+// Add a bonus amount
+export const addBonusAmount = async (employeeId: string, bonusAmount: string): Promise<EmployeeDocument | null> => {
+    return EmployeeModel.findByIdAndUpdate(
+        employeeId,
+        { $push: { bonus: bonusAmount } },
+        { new: true }
+    );
+}
+
+// Remove a specific bonus amount
+export const removeBonusAmount = async (employeeId: string, bonusAmount: string): Promise<EmployeeDocument | null> => {
+    return EmployeeModel.findByIdAndUpdate(
+        employeeId,
+        { $pull: { bonus: bonusAmount } },
+        { new: true }
+    );
+}
+
+export const getTotalBonusAmount = async (employeeId: string): Promise<number> => {
+    const employee = await EmployeeModel.findById(employeeId);
+    if (!employee) {
+        throw new Error("Employee not found");
+    }
+    if (!employee.bonus) {
+        return 0;
+    }
+    return employee?.bonus?.reduce((total, bonus) => total + parseFloat(bonus), 0);
+}
+
+// Add bonus amount by user ID
+export const addBonusAmountByUserId = async (userId: string, bonusAmount: string): Promise<EmployeeDocument | null> => {
+    return EmployeeModel.findOneAndUpdate(
+        { user: userId },
+        { $push: { bonus: bonusAmount } },
+        { new: true }
+    );
+}
+
+// Remove bonus amount by user ID
+export const removeBonusAmountByUserId = async (userId: string, bonusAmount: string): Promise<EmployeeDocument | null> => {
+    return EmployeeModel.findOneAndUpdate(
+        { user: userId },
+        { $pull: { bonus: bonusAmount } },
+        { new: true }
+    );
+}
+
+
+
+// Clear bonus array by user ID
+export const clearBonusArrayByUserId = async (userId: string): Promise<EmployeeDocument | null> => {
+    return EmployeeModel.findOneAndUpdate(
+        { user: userId },
+        { $set: { bonus: [] } },
+        { new: true }
+    );
+}
