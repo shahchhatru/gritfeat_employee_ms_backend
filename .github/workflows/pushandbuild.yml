@@ -65,4 +65,4 @@ jobs:
             -e REDIS_HOST=${{ secrets.REDIS_HOST }} \
             -e REDIS_PORT=${{ secrets.REDIS_PORT }} \
             -e REFRESH_KEY=${{ secrets.REFRESH_KEY }} \
-            ${{ secrets.DOCKER_USERNAME }}/my-express-app:latest
+            ${{ secrets.DOCKER_USERNAME }}/ems-express-server

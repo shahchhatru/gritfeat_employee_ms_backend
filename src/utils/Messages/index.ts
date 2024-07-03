@@ -149,6 +149,13 @@ export const messages = {
     fetch_success: "Sucessfully fetched data",
     edit_success: 'Salary Reciept Edited Successfully',
     organization_fail: "Salary related to organization can't be found"
+  },
+  attendence: {
+    creation_success: 'Attendence Reciept Storedd Successfully in database',
+    creation_failed: 'Failed to create Attendence Reciept',
+    fetch_success: "Sucessfully fetched data",
+    edit_success: 'Attendence Reciept Edited Successfully',
+    not_found: "Attendence not found"
   }
 
 };
