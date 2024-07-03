@@ -53,7 +53,7 @@ jobs:
         run: |
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/my-express-app:latest
 
-      - name: Run Docker image
+      - name: Run Docker image #run the image
         run: |
           sudo docker run -d -p 3003:3000 \
             -e ACCESS_KEY=${{ secrets.ACCESS_KEY }} \
