@@ -10,7 +10,7 @@ import { connectToDB } from './src/config/dbConnect';
 import { errorResponse } from './src/utils/HttpResponse';
 import deSerializeUser from './src/middleware/deSerializeUser';
 import { globalErrorHandler } from './src/middleware/globalErrorHandler';
-
+import { redisClient } from './src/config/redisConfig';
 
 
 
@@ -18,6 +18,10 @@ import { globalErrorHandler } from './src/middleware/globalErrorHandler';
   const app = express();
   // const redisClient = redis.createClient()
 
+  redisClient.on('error', (err) => console.log('Redis Client Error', err));
+  redisClient.on('connect', () => console.log('Redis Client Connected Successfully'));
+
+  await redisClient.connect();
   app.use(bodyParser.json());
 
   app.use(cors(env.cors ? { origin: env.cors, optionsSuccessStatus: 200 } : undefined));
