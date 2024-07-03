@@ -10,4 +10,5 @@ export enum ApplicationTypes {
     URGENT = 'URGENT',
     OTHER = 'OTHER',
     RESIGNATION = 'RESIGNATION',
+
 }
