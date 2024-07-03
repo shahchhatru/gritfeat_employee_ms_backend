@@ -3,7 +3,7 @@ import { User } from '../../../types/user';
 import UserService from './service';
 import { successResponse } from '../../../utils/HttpResponse';
 import { messages } from '../../../utils/Messages';
-
+import { redisClient } from '../../../config/redisConfig'; // Import the Redis client
 
 const UserController = {
   async createUser(req: Request<unknown, unknown, User>, res: Response, next: NextFunction) {
@@ -26,14 +26,28 @@ const UserController = {
   async getUser(req: Request, res: Response, next: NextFunction) {
     try {
       const id: string = req.params.id;
-      const result = await UserService.getUser(id)
-      return successResponse(
-        {
+      const cacheKey = `user:${id}`;
+
+      // Check if the data is in the cache
+      const cachedUser = await redisClient.get(cacheKey);
+      if (cachedUser) {
+        return successResponse({
           response: res,
           message: messages.user.user_found_succes,
-          data: result,
-        }
-      )
+          data: JSON.parse(cachedUser),
+        });
+      }
+
+      const result = await UserService.getUser(id);
+
+      // Store the result in the cache
+      await redisClient.set(cacheKey, JSON.stringify(result), { EX: 3600 }); // Cache for 1 hour
+
+      return successResponse({
+        response: res,
+        message: messages.user.user_found_succes,
+        data: result,
+      });
     } catch (error) {
       next(error);
     }
@@ -41,7 +55,23 @@ const UserController = {
 
   async getUsers(req: Request, res: Response, next: NextFunction) {
     try {
+      const cacheKey = 'users:all';
+
+      // Check if the data is in the cache
+      const cachedUsers = await redisClient.get(cacheKey);
+      if (cachedUsers) {
+        return successResponse({
+          response: res,
+          message: 'Fetched Users successfully',
+          data: JSON.parse(cachedUsers),
+        });
+      }
+
       const result = await UserService.getUsers();
+
+      // Store the result in the cache
+      await redisClient.set(cacheKey, JSON.stringify(result), { EX: 3600 }); // Cache for 1 hour
+
       return successResponse({
         response: res,
         message: 'Fetched Users successfully',
@@ -54,7 +84,23 @@ const UserController = {
 
   async getUsersNameAndID(req: Request, res: Response, next: NextFunction) {
     try {
+      const cacheKey = 'users:nameAndId';
+
+      // Check if the data is in the cache
+      const cachedUsers = await redisClient.get(cacheKey);
+      if (cachedUsers) {
+        return successResponse({
+          response: res,
+          message: 'Fetched Users successfully',
+          data: JSON.parse(cachedUsers),
+        });
+      }
+
       const result = await UserService.getAllUsersNameandID();
+
+      // Store the result in the cache
+      await redisClient.set(cacheKey, JSON.stringify(result), { EX: 3600 }); // Cache for 1 hour
+
       return successResponse({
         response: res,
         message: 'Fetched Users successfully',
@@ -85,6 +131,10 @@ const UserController = {
       const body = req.body;
       const result = await UserService.updateUser(id, body);
 
+      // Invalidate the cache for the updated user
+      const cacheKey = `user:${id}`;
+      await redisClient.del(cacheKey);
+
       return successResponse({
         response: res,
         message: messages.user.user_update_succes,
@@ -93,15 +143,27 @@ const UserController = {
     } catch (error) {
       next(error);
     }
-  }
-  ,
+  },
 
   async getAllUserByOrganizationID(req: Request, res: Response, next: NextFunction) {
     try {
       const user = res.locals.user;
-      //if (!user.organizationId) throw new Error(messages.user.dooes_not_belong);
-      console.log({ user })
+      const cacheKey = `users:organization:${user.organizationId}`;
+
+      // Check if the data is in the cache
+      const cachedUsers = await redisClient.get(cacheKey);
+      if (cachedUsers) {
+        return successResponse({
+          response: res,
+          message: 'Fetched Users successfully',
+          data: JSON.parse(cachedUsers),
+        });
+      }
+
       const result = await UserService.getallUserbyOrganizationID(user.organizationId);
+
+      // Store the result in the cache
+      await redisClient.set(cacheKey, JSON.stringify(result), { EX: 3600 }); // Cache for 1 hour
 
       return successResponse({
         response: res,
