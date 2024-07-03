@@ -1,6 +1,6 @@
 export interface Attendence {
-    user: string;
-    organization: string;
-    date: Date;
+    user?: string;
+    organization?: string;
+    date?: string;
     status: string;
 }
