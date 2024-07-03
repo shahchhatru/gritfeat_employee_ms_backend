@@ -36,47 +36,9 @@ jobs:
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/ems-express-server:latest
 
-build-on-self-hosted:
-  runs-on: self-hosted
-
-  steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Log in to Docker Hub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-
-    - name: Pull Docker image
-      run: |
-        sudo docker pull ${{ secrets.DOCKER_USERNAME }}/ems-express-server 
-
-    - name: Stop and remove existing container if exists
-      run: |
-        if [ $(sudo docker ps -a -q -f name=ems-express-container) ]; then
-          sudo docker stop ems-express-container
-          sudo docker rm ems-express-container
-        fi
-
-    - name: Run Docker image
-      run: |
-        sudo docker run --name ems-express-container --network="host" -d \
-          -e ACCESS_KEY=${{ secrets.ACCESS_KEY }} \
-          -e EMAIL=${{ secrets.EMAIL }} \
-          -e EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }} \
-          -e FRONTEND_URL=${{ secrets.FRONTEND_URL }} \
-          -e JWT_PASSWORD_KEY=${{ secrets.JWT_PASSWORD_KEY }} \
-          -e MONGO_URI=${{ secrets.MONGO_URI }} \
-          -e REDIS_HOST=${{ secrets.REDIS_HOST }} \
-          -e REDIS_PORT=${{ secrets.REDIS_PORT }} \
-          -e REFRESH_KEY=${{ secrets.REFRESH_KEY }} \
-          -e PORT=3003 \
-          ${{ secrets.DOCKER_USERNAME }}/ems-express-server
-
+  build-on-self-hosted:
     runs-on: self-hosted
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -91,9 +53,16 @@ build-on-self-hosted:
         run: |
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/ems-express-server 
 
-      - name: Run Docker image #run the image
+      - name: Stop and remove existing container if exists
         run: |
-          sudo docker run --network="host" -d -p 3003:3000 \
+          if [ $(sudo docker ps -a -q -f name=ems-express-container) ]; then
+            sudo docker stop ems-express-container
+            sudo docker rm ems-express-container
+          fi
+
+      - name: Run Docker image
+        run: |
+          sudo docker run --name ems-express-container --network="host" -d \
             -e ACCESS_KEY=${{ secrets.ACCESS_KEY }} \
             -e EMAIL=${{ secrets.EMAIL }} \
             -e EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }} \
@@ -103,5 +72,36 @@ build-on-self-hosted:
             -e REDIS_HOST=${{ secrets.REDIS_HOST }} \
             -e REDIS_PORT=${{ secrets.REDIS_PORT }} \
             -e REFRESH_KEY=${{ secrets.REFRESH_KEY }} \
-            -e PORT =3003 \
+            -e PORT=3003 \
             ${{ secrets.DOCKER_USERNAME }}/ems-express-server
+
+      runs-on: self-hosted
+      
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v2
+
+        - name: Log in to Docker Hub
+          uses: docker/login-action@v2
+          with:
+            username: ${{ secrets.DOCKER_USERNAME }}
+            password: ${{ secrets.DOCKER_PASSWORD }}
+
+        - name: Pull Docker image
+          run: |
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/ems-express-server 
+
+        - name: Run Docker image #run the image
+          run: |
+            sudo docker run --network="host" -d -p 3003:3000 \
+              -e ACCESS_KEY=${{ secrets.ACCESS_KEY }} \
+              -e EMAIL=${{ secrets.EMAIL }} \
+              -e EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }} \
+              -e FRONTEND_URL=${{ secrets.FRONTEND_URL }} \
+              -e JWT_PASSWORD_KEY=${{ secrets.JWT_PASSWORD_KEY }} \
+              -e MONGO_URI=${{ secrets.MONGO_URI }} \
+              -e REDIS_HOST=${{ secrets.REDIS_HOST }} \
+              -e REDIS_PORT=${{ secrets.REDIS_PORT }} \
+              -e REFRESH_KEY=${{ secrets.REFRESH_KEY }} \
+              -e PORT =3003 \
+              ${{ secrets.DOCKER_USERNAME }}/ems-express-server
