@@ -3,4 +3,6 @@ export interface Attendence {
     organization?: string;
     date?: string;
     status: string;
+    type?: string;
+    token?: string;
 }

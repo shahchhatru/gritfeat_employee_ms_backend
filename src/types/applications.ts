@@ -5,4 +5,5 @@ export interface Application {
     user: string;
     organization: string;
     status: string;
+
 }
