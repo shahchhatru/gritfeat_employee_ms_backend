@@ -51,8 +51,19 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Pull docker image
-        run: docker pull ${{ secrets.DOCKER_USERNAME }}/my-express-app:latest
+        run: sudo docker pull ${{ secrets.DOCKER_USERNAME }}/my-express-app:latest
 
       - name: Run docker image
-        run: docker run -d -p 3003:3000 ${{ secrets.DOCKER_USERNAME }}/my-express-app
+        run: sudo docker run -d -p 3003:3000 \
+  -e ACCESS_KEY=${{ secrets.ACCESS_KEY }} \
+  -e EMAIL=${{ secrets.EMAIL }} \
+  -e EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }} \
+  -e FRONTEND_URL=${{ secrets.FRONTEND_URL }} \
+  -e JWT_PASSWORD_KEY=${{ secrets.JWT_PASSWORD_KEY }} \
+  -e MONGO_URI=${{ secrets.MONGO_URI }} \
+  -e REDIS_HOST=${{ secrets.REDIS_HOST }} \
+  -e REDIS_PORT=${{ secrets.REDIS_PORT }} \
+  -e REFRESH_KEY=${{ secrets.REFRESH_KEY }} \
+  ${{ secrets.DOCKER_USERNAME }}/my-express-app
+
 
