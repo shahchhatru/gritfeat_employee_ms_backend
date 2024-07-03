@@ -135,6 +135,7 @@ const SalaryController = {
             if (!user) {
                 throw new CustomError(messages.user.user_not_found, 404);
             }
+            console.log({ user, month, year })
 
             let salaries;
 

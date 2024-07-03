@@ -8,6 +8,6 @@ SalaryRouter.use(deSerializeUser);
 SalaryRouter.use(requireUser);
 SalaryRouter.route('/').get(SalaryController.getSalariesByOrg);
 SalaryRouter.route('/').post(SalaryController.createSalary);
-SalaryRouter.route('/:user').get(SalaryController.getSalariesByUser);
 SalaryRouter.route('/user').get(SalaryController.getSalaries);
+SalaryRouter.route('/:user').get(SalaryController.getSalariesByUser);
 export default SalaryRouter
