@@ -25,7 +25,7 @@ COPY --from=builder /app/dist ./
 RUN npm install
 
 # Expose port 5000
-EXPOSE 5000
+EXPOSE 3000
 
 # Set the entrypoint
 ENTRYPOINT ["node", "index.js"]
