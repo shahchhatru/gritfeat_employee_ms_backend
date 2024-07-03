@@ -55,7 +55,7 @@ jobs:
 
       - name: Run Docker image #run the image
         run: |
-          sudo docker run -d -p 3003:3000 \
+          sudo docker run --network="host" -d -p 3003:3000 \
             -e ACCESS_KEY=${{ secrets.ACCESS_KEY }} \
             -e EMAIL=${{ secrets.EMAIL }} \
             -e EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }} \
