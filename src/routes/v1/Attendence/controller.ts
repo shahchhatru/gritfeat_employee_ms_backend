@@ -5,7 +5,6 @@ import CustomError from '../../../utils/Error';
 import { messages } from '../../../utils/Messages';
 import { Attendence } from '../../../types/attendence';
 import OrganizationService from '../Organizations/service';
-import { createAdminAttendenceToken } from './repository';
 
 
 const AttendenceController = {
