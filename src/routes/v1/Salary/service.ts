@@ -1,5 +1,5 @@
 import { Salary } from '../../../types/salary'
-import { createSalary, getAllSalary, getAllSalaryByOrg, getAllSalaryByUser, getAllSalaryByUserAndMonth, getAllSalaryByUserAndYear, getAllSalaryUserYearAndMonth } from './repository'
+import { createSalary, getAllSalary, getAllSalaryByOrg, getAllSalaryByEmployee, getAllSalaryByUserAndMonth, getAllSalaryByUserAndYear, getAllSalaryUserYearAndMonth } from './repository'
 
 
 const SalaryService = {
@@ -20,7 +20,7 @@ const SalaryService = {
     },
 
     async getSalaryByUser(user: string) {
-        const sal = await getAllSalaryByUser(user);
+        const sal = await getAllSalaryByEmployee(user);
         return sal;
     },
 
