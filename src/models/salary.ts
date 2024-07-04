@@ -2,7 +2,7 @@ import mongoose, { Document } from 'mongoose';
 import { Salary } from '../types/salary';
 import { Month } from '../enums/month.enum';
 import cron from 'node-cron';
-import { UserModel } from './user';
+
 import { OrganizationModel } from './organization';
 import EmployeeModel from './employee';
 
@@ -35,9 +35,9 @@ const SalarySchema = new mongoose.Schema({
         default: 0,
         required: false
     },
-    user: {
+    employee: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Employee',
         required: true
     },
     month: {
@@ -90,14 +90,19 @@ cron.schedule('0 1 * * *', async () => { // Runs daily at 1 AM
 
             for (const employee of employees) {
 
-
+                if (employee?.joiningDate == null) {
+                    continue;
+                }
                 const joiningDate = new Date(employee?.joiningDate?.toString());
                 const oneMonthAfterJoining = new Date(joiningDate.setMonth(joiningDate.getMonth() + 1));
 
                 if (currentDate >= oneMonthAfterJoining) {
                     // Check if a salary entry already exists for this month and year
+                    if (!employee?._id) {
+                        continue;
+                    }
                     const existingSalary = await SalaryModel.findOne({
-                        user: employee?.user?._id?.toString(),
+                        employee: employee._id?.toString(),
                         month: currentMonth,
                         year: currentYear,
                         organization: org._id
@@ -111,14 +116,15 @@ cron.schedule('0 1 * * *', async () => { // Runs daily at 1 AM
                             tax,
                             pf,
                             netAmount,
-                            user: employee?.user?._id?.toString(),
+                            bonus: employee.bonus?.reduce((a, b) => a + b, 0),
+                            employee: employee._id.toString(),
                             month: currentMonth,
                             year: currentYear,
                             organization: org._id
                         });
 
                         await newSalary.save();
-                        console.log(`Created salary entry for employee ${employee.user._id} for ${currentMonth} ${currentYear}`);
+                        console.log(`Created salary entry for employee ${employee._id} for ${currentMonth} ${currentYear}`);
                     }
                 }
             }

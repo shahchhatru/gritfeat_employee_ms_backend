@@ -49,7 +49,7 @@ export const deleteEmployeeByUserId = async (id: string): Promise<EmployeeDocume
 export const addBonusAmount = async (employeeId: string, bonusAmount: string): Promise<EmployeeDocument | null> => {
     return EmployeeModel.findByIdAndUpdate(
         employeeId,
-        { $push: { bonus: bonusAmount } },
+        { $push: { bonus: parseInt(bonusAmount) } },
         { new: true }
     );
 }
@@ -58,7 +58,7 @@ export const addBonusAmount = async (employeeId: string, bonusAmount: string): P
 export const removeBonusAmount = async (employeeId: string, bonusAmount: string): Promise<EmployeeDocument | null> => {
     return EmployeeModel.findByIdAndUpdate(
         employeeId,
-        { $pull: { bonus: bonusAmount } },
+        { $pull: { bonus: parseInt(bonusAmount) } },
         { new: true }
     );
 }
@@ -71,7 +71,7 @@ export const getTotalBonusAmount = async (employeeId: string): Promise<number> =
     if (!employee.bonus) {
         return 0;
     }
-    return employee?.bonus?.reduce((total, bonus) => total + parseFloat(bonus), 0);
+    return employee?.bonus?.reduce((total, bonus) => total + bonus, 0);
 }
 
 // Add bonus amount by user ID

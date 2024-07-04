@@ -5,7 +5,7 @@ export interface Employee {
     skills?: string;
     user?: string;
     organizationId?: string;
-    bonus?: string[];
+    bonus?: number[];
 }
 
 export interface EmployeeWithUser {
@@ -17,7 +17,7 @@ export interface EmployeeWithUser {
     email: string;
     role?: string;
     password: string;
-    bonus?: string[];
+    bonus?: number[];
 
 }
 
