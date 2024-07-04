@@ -19,6 +19,7 @@ export const getAllEmployeesByOrganization = (): Promise<EmployeeDocument[]> => 
     return EmployeeModel.find({})
 }
 
+
 export const getEmployeeByUserId = (id: string): Promise<EmployeeDocument | null> => {
     return EmployeeModel.findOne({ user: id })
 }

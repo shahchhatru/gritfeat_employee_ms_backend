@@ -1,5 +1,6 @@
 import { UserDocument, UserModel } from '../../../../models/user';
 import { User } from '../../../../types/user';
+import EmployeeModel from '../../../../models/employee';
 
 export const createUserRepo = (userData: User): Promise<UserDocument> => {
   const user = new UserModel(userData);
@@ -50,3 +51,11 @@ export const deleteUserById = async (id: string): Promise<UserDocument | null> =
 export const getAllUserByOrganizationID = async (orgId: string): Promise<UserDocument[]> => {
   return UserModel.find({ organizationId: orgId })
 }
+
+export const getUserByEmployeeID = async (empId: string): Promise<UserDocument | null> => {
+  const emp = await EmployeeModel.findOne({ _id: empId })
+
+  return UserModel.findOne({ _id: emp?.user?.toString() })
+
+}
+

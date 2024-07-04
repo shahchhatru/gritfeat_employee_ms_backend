@@ -5,6 +5,7 @@ import SalaryService from "./service";
 import CustomError from "../../../utils/Error";
 import { redisClient } from "../../../config/redisConfig"; // Import the Redis client
 
+
 const SalaryController = {
 
     async createSalary(req: Request, res: Response, next: NextFunction) {
@@ -224,6 +225,7 @@ const SalaryController = {
         try {
             const { user, month, year } = req.query;
 
+
             if (!user) {
                 throw new CustomError(messages.user.user_not_found, 404);
             }
@@ -231,7 +233,9 @@ const SalaryController = {
             let salaries;
             let cacheKey;
 
+
             if (year && month) {
+
                 // Fetch salaries for user, year, and month
                 cacheKey = `salaries:user:${user}:year:${year}:month:${month}`;
                 salaries = await SalaryService.getAllSalaryUserYearAndMonth(user.toString(), year.toString(), month.toString());

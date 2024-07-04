@@ -1,6 +1,7 @@
 import { Salary } from '../../../types/salary'
+import EmployeeService from '../Employee/service';
 import { createSalary, getAllSalary, getAllSalaryByOrg, getAllSalaryByEmployee, getAllSalaryByUserAndMonth, getAllSalaryByUserAndYear, getAllSalaryUserYearAndMonth } from './repository'
-
+import CustomError from '../../../utils/Error';
 
 const SalaryService = {
     async createSalary(salary: Salary) {
@@ -32,12 +33,18 @@ const SalaryService = {
     ,
 
     async getAllSalaryByUserAndYear(user: string, year: string) {
+        const employee = await EmployeeService.getEmployeeByUserId(user);
+        if (!employee) throw new CustomError('Employee not found', 404);
+        if (!employee?._id) throw new CustomError('Employee not found', 404);
         const sal = await getAllSalaryByUserAndYear(user, year);
         return sal;
     },
 
     async getAllSalaryUserYearAndMonth(user: string, year: string, month: string) {
-        const sal = await getAllSalaryUserYearAndMonth(user, year, month);
+        const employee = await EmployeeService.getEmployeeByUserId(user);
+        if (!employee) throw new CustomError('Employee not found', 404);
+        if (!employee?._id) throw new CustomError('Employee not found', 404);
+        const sal = await getAllSalaryUserYearAndMonth(employee?._id?.toString(), year, month);
         return sal;
 
     }
