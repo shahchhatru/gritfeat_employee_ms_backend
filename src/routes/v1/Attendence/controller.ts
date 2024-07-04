@@ -5,6 +5,7 @@ import CustomError from '../../../utils/Error';
 import { messages } from '../../../utils/Messages';
 import { Attendence } from '../../../types/attendence';
 import OrganizationService from '../Organizations/service';
+import { createAdminAttendenceToken } from './repository';
 
 
 const AttendenceController = {
@@ -89,7 +90,24 @@ const AttendenceController = {
         }
     },
 
+    async createAdminAttendenceToken(req: Request, res: Response, next: NextFunction) {
+        try {
+            const user = res.locals.user;
+            if (!user) throw new CustomError(messages.user.user_not_found, 404);
+            if (user.role !== 'ADMIN') throw new CustomError(messages.actions.forbidden_message, 403);
+            const token = await AttendenceService.generateAdminAttendence(user.organizationId.toString(), user._id.toString(), Date.now().toString());
+            return successResponse({
+                response: res,
+                message: messages.attendence.successfully_displayed_admin_qr,
+                data: token,
+                status: 200,
+            });
+        } catch (error) {
+            next(error);
+        }
 
+
+    }
 }
 
 export default AttendenceController;

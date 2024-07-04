@@ -1,7 +1,7 @@
 import { Attendence } from "../../../../types/attendence";
 import AttendenceModel, { AttendenceDocument } from "../../../../models/attendence";
-import { AttendenceType } from "../../../../enums/attendence.enum";
-
+import { AttendenceType, AttendenceStatus } from "../../../../enums/attendence.enum";
+import { generateToken } from "../../../../utils/";
 
 export const createAttendence = (attendence: Attendence): Promise<AttendenceDocument> => {
     const attend = new AttendenceModel(attendence);
@@ -74,6 +74,23 @@ export const AdminAttendenceBydate = async (orgId: string, adminId: string, date
         }
         , type: AttendenceType.ADMIN
     }).exec()
+}
+
+export const createAdminAttendenceToken = async (id: string, orgId: string, date: string): Promise<AttendenceDocument | null> => {
+    const attendence = new AttendenceModel(
+        {
+            user: id,
+            date,
+            type: AttendenceType.EMPLOYEE,
+            organization: orgId,
+            status: AttendenceStatus.PRESENT,
+            token: generateToken(32)
+        },
+        { new: true }
+    )
+
+    return attendence.save()
+
 }
 
 

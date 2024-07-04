@@ -3,7 +3,7 @@ import { messages } from "../../../utils/Messages";
 import { Attendence } from "../../../types/attendence";
 import {
     createAttendence, getAttendenceByUserId, updateAttendence, deleteAttendence,
-    getAttendenceByUserIdAndDate, AdminAttendenceBydate, getAttendenceByOrgId
+    getAttendenceByUserIdAndDate, AdminAttendenceBydate, getAttendenceByOrgId, createAdminAttendenceToken
 } from './repository';
 
 const AttendenceService = {
@@ -65,6 +65,19 @@ const AttendenceService = {
             throw new CustomError(messages.attendence.not_found, 404);
         }
         return attendences;
+    },
+
+    async generateAdminAttendence(orgId: string, adminId: string, date: string) {
+        const attendence = await AdminAttendenceBydate(orgId, adminId, date);
+        if (!attendence) {
+            const adminAttendenceInstance = await createAdminAttendenceToken(adminId, orgId, date);
+            if (!adminAttendenceInstance) {
+                throw new CustomError(messages.attendence.creation_failed, 403);
+            }
+            return adminAttendenceInstance;
+
+        }
+        return attendence;
     }
 }
 export default AttendenceService

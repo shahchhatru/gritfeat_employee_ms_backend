@@ -1,9 +1,9 @@
 import { Attendence } from "../types/attendence";
 import { AttendenceStatus, AttendenceType } from "../enums/attendence.enum";
 import mongoose, { Document, Model, Schema } from "mongoose";
-import crypto from 'crypto';
 import { UserModel } from './user';
 import { OrganizationModel } from './organization';
+import { generateToken } from "../utils/";
 
 import cron from 'node-cron';
 
@@ -61,9 +61,7 @@ const AttendenceModel = mongoose.model<AttendenceDocument, AttendenceModel>('Att
 export default AttendenceModel;
 
 // Function to generate a random token
-const generateToken = (length: number): string => {
-    return crypto.randomBytes(length).toString('hex');
-};
+
 
 // Function to find the admin of an organization
 const findOrganizationAdmin = async (organizationId: string): Promise<string | null | undefined> => {
@@ -88,7 +86,7 @@ cron.schedule('0 9 * * *', async () => {
                         user: adminId,
                         organization: org._id,
                         date: new Date(),
-                        status: AttendenceStatus.ABSENT,
+                        status: AttendenceStatus.PRESENT,
                         type: AttendenceType.ADMIN,
                         token: generateToken(32) // 32 bytes = 64 characters in hex
                     });
