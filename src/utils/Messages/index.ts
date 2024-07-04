@@ -155,7 +155,11 @@ export const messages = {
     creation_failed: 'Failed to create Attendence Reciept',
     fetch_success: "Sucessfully fetched data",
     edit_success: 'Attendence Reciept Edited Successfully',
-    not_found: "Attendence not found"
+    not_found: "Attendence not found",
+    successfully_displayed_admin_qr: "Successfully displayed QR for admin",
+    successfully_verified_userQR: "Successfully verified user QR",
+    attendence_token_validation_failed: "Attendence token validation faild",
+
   }
 
 };

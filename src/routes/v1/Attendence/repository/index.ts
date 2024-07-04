@@ -1,5 +1,6 @@
 import { Attendence } from "../../../../types/attendence";
 import AttendenceModel, { AttendenceDocument } from "../../../../models/attendence";
+import { AttendenceType } from "../../../../enums/attendence.enum";
 
 
 export const createAttendence = (attendence: Attendence): Promise<AttendenceDocument> => {
@@ -9,6 +10,10 @@ export const createAttendence = (attendence: Attendence): Promise<AttendenceDocu
 
 export const getAttendenceByUserId = (id: string): Promise<AttendenceDocument[] | null> => {
     return AttendenceModel.find({ user: id }).exec();
+}
+
+export const getAttendenceByOrgId = (id: string): Promise<AttendenceDocument[] | null> => {
+    return AttendenceModel.find({ organization: id }).exec()
 }
 
 export const getAttendenceByUserIdAndDate = (id: string, date: string): Promise<AttendenceDocument | null> => {
@@ -53,3 +58,22 @@ export const updateAttendence = async (
 export const deleteAttendence = async (id: string): Promise<AttendenceDocument | null> => {
     return AttendenceModel.findOneAndDelete({ user: id })
 }
+
+export const AdminAttendenceBydate = async (orgId: string, adminId: string, date: string): Promise<AttendenceDocument | null> => {
+    const startOfDay = new Date(date);
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const endOfDay = new Date(date);
+    endOfDay.setHours(23, 59, 59, 999);
+    return AttendenceModel.findOne({
+        user: adminId,
+        organization: orgId,
+        date: {
+            $gte: startOfDay,
+            $lte: endOfDay
+        }
+        , type: AttendenceType.ADMIN
+    }).exec()
+}
+
+

@@ -3,7 +3,7 @@ import { messages } from "../../../utils/Messages";
 import { Attendence } from "../../../types/attendence";
 import {
     createAttendence, getAttendenceByUserId, updateAttendence, deleteAttendence,
-    getAttendenceByUserIdAndDate
+    getAttendenceByUserIdAndDate, AdminAttendenceBydate, getAttendenceByOrgId
 } from './repository';
 
 const AttendenceService = {
@@ -16,6 +16,14 @@ const AttendenceService = {
     },
     async getAttendenceByUserId(id: string) {
         const attendence = await getAttendenceByUserId(id);
+        if (!attendence) {
+            throw new CustomError(messages.attendence.not_found, 404);
+        }
+        return attendence;
+    },
+
+    async getAttendenceByOrgId(id: string) {
+        const attendence = await getAttendenceByOrgId(id);
         if (!attendence) {
             throw new CustomError(messages.attendence.not_found, 404);
         }
@@ -42,6 +50,21 @@ const AttendenceService = {
             throw new CustomError(messages.attendence.not_found, 404);
         }
         return attendence;
+    },
+
+    async getAdminAttendenceInstances(orgId: string, adminId: string) {
+        const attendences = await getAttendenceByUserId(adminId);
+        if (!attendences) {
+            throw new CustomError(messages.attendence.not_found, 404);
+        }
+        return attendences;
+    },
+    async AdminAttendenceBydate(orgId: string, adminId: string, date: string) {
+        const attendences = await AdminAttendenceBydate(orgId, adminId, date);
+        if (!attendences) {
+            throw new CustomError(messages.attendence.not_found, 404);
+        }
+        return attendences;
     }
 }
 export default AttendenceService
