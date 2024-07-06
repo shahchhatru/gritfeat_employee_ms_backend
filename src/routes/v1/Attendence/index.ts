@@ -7,7 +7,11 @@ import requireUser from '../../../middleware/requireUser';
 const attendenceRouter = Router();
 attendenceRouter.use(deSerializeUser)
 attendenceRouter.use(requireUser)
-attendenceRouter.route('/').post(AttendenceController.checkAttendence);
+attendenceRouter.route('/check').post(AttendenceController.checkAttendence);
+attendenceRouter.route('/adminAttendenceToken').get(AttendenceController.createAdminAttendenceToken);
+attendenceRouter.route('/adminAttendence').get(AttendenceController.getAdminAttendenceInstances);
+attendenceRouter.route('/').get(AttendenceController.getAllAttendence);
+
 
 
 export default attendenceRouter;

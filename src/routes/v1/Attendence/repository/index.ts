@@ -81,12 +81,12 @@ export const createAdminAttendenceToken = async (id: string, orgId: string, date
         {
             user: id,
             date,
-            type: AttendenceType.EMPLOYEE,
+            type: AttendenceType.ADMIN,
             organization: orgId,
             status: AttendenceStatus.PRESENT,
             token: generateToken(32)
         },
-        { new: true }
+
     )
 
     return attendence.save()

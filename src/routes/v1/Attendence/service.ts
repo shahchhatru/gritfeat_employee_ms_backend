@@ -46,9 +46,9 @@ const AttendenceService = {
     ,
     async getAttendenceByUserIdAndDate(id: string, date: string) {
         const attendence = await getAttendenceByUserIdAndDate(id, date);
-        if (!attendence) {
-            throw new CustomError(messages.attendence.not_found, 404);
-        }
+        // if (!attendence) {
+        //     throw new CustomError(messages.attendence.not_found, 404);
+        // }
         return attendence;
     },
 
@@ -69,8 +69,10 @@ const AttendenceService = {
 
     async generateAdminAttendence(orgId: string, adminId: string, date: string) {
         const attendence = await AdminAttendenceBydate(orgId, adminId, date);
+        console.log('attendence', attendence)
         if (!attendence) {
             const adminAttendenceInstance = await createAdminAttendenceToken(adminId, orgId, date);
+            console.log('attendence 2', adminAttendenceInstance)
             if (!adminAttendenceInstance) {
                 throw new CustomError(messages.attendence.creation_failed, 403);
             }
