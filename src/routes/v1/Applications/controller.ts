@@ -17,6 +17,9 @@ const ApplicationController = {
             // Invalidate the cache for all applications for the organization
             const cacheKey = `applications:organization:${user.organizationId}`;
             await redisClient.del(cacheKey);
+            const supervisorCacheKey = `applications:supervisor:${body.supervisor?.toString()}`;
+            await redisClient.del(supervisorCacheKey);
+
 
             return successResponse({
                 response: res,
@@ -44,12 +47,16 @@ const ApplicationController = {
             if (application.supervisor?.toString() !== user._id) throw new CustomError(messages.user.user_not_found, 404);
 
             const result = await ApplicationService.updateApplication(id, { status: body.status });
-
+            const usercacheKey = `applications:user:${user._id}`;
+            await redisClient.del(usercacheKey);
             // Invalidate the cache for the specific application and all applications for the organization
             const cacheKey = `application:${id}`;
             await redisClient.del(cacheKey);
             const orgCacheKey = `applications:organization:${user.organizationId}`;
             await redisClient.del(orgCacheKey);
+            const supervisorCacheKey = `applications:supervisor:${application.supervisor?.toString()}`;
+            await redisClient.del(supervisorCacheKey);
+
 
             return successResponse({
                 response: res,
@@ -77,8 +84,13 @@ const ApplicationController = {
             // Invalidate the cache for the specific application and all applications for the organization
             const cacheKey = `application:${body.id}`;
             await redisClient.del(cacheKey);
+            const usercacheKey = `applications:user:${user._id}`;
+            await redisClient.del(usercacheKey);
             const orgCacheKey = `applications:organization:${user.organizationId}`;
             await redisClient.del(orgCacheKey);
+            const supervisorCacheKey = `applications:supervisor:${application.supervisor?.toString()}`;
+            await redisClient.del(supervisorCacheKey);
+
 
             return successResponse({
                 response: res,
@@ -99,7 +111,7 @@ const ApplicationController = {
 
             const id = req.params.id;
             const application = await ApplicationService.getApplicationById(id);
-            if (application.user?.toString() !== user._id) throw new CustomError(messages.application.edit_forbidden, 404);
+            if (application.user?.toString() !== user._id && application.supervisor?.toString() !== user._id) throw new CustomError(messages.application.edit_forbidden, 404);
 
             const result = await ApplicationService.deleteApplication(id);
 
@@ -108,6 +120,10 @@ const ApplicationController = {
             await redisClient.del(cacheKey);
             const orgCacheKey = `applications:organization:${user.organizationId}`;
             await redisClient.del(orgCacheKey);
+            const usercacheKey = `applications:user:${user._id}`;
+            await redisClient.del(usercacheKey);
+            const supervisorCacheKey = `applications:supervisor:${application.supervisor?.toString()}`;
+            await redisClient.del(supervisorCacheKey);
 
             return successResponse({
                 response: res,
@@ -228,8 +244,6 @@ const ApplicationController = {
     async getApplicationsByUserId(req: Request, res: Response, next: NextFunction) {
         try {
             const id = req.params.id;
-            const user = res.locals.user;
-            if (user._id.toString() != id) throw new CustomError(messages.actions.forbidden_message, 404);
 
             const cacheKey = `applications:user:${id}`;
 

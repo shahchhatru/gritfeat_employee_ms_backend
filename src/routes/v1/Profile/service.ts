@@ -36,9 +36,10 @@ const ProfileService = {
     },
 
     async updateProfileByUserId(id: string, data: Partial<Profile>) {
-        const profile = await updateProfileByUserId(id, data);
+
+        var profile = await updateProfileByUserId(id, data);
         if (!profile) {
-            throw new CustomError(messages.profile.not_found, 404);
+            profile = await this.createProfile({ ...data, user: id });
         }
         return profile;
     },
