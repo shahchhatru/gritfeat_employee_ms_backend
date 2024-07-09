@@ -115,6 +115,22 @@ const AttendenceController = {
         }
 
 
+    },
+
+    async getMyAttendence(req: Request, res: Response, next: NextFunction) {
+        try {
+            const user = res.locals.user;
+            if (!user) throw new CustomError(messages.user.user_not_found, 404);
+            const attendences = await AttendenceService.getAttendenceByUserId(user._id.toString());
+            return successResponse({
+                response: res,
+                message: messages.attendence.fetch_success,
+                data: attendences,
+                status: 200,
+            });
+        } catch (error) {
+            next(error);
+        }
     }
 }
 
