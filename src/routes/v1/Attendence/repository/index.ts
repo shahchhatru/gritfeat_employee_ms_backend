@@ -9,7 +9,7 @@ export const createAttendence = (attendence: Attendence): Promise<AttendenceDocu
 }
 
 export const getAttendenceByUserId = (id: string): Promise<AttendenceDocument[] | null> => {
-    return AttendenceModel.find({ user: id }).exec();
+    return AttendenceModel.find({ user: id }).populate("user", "name email").exec();
 }
 
 export const getAttendenceByOrgId = (id: string): Promise<AttendenceDocument[] | null> => {
