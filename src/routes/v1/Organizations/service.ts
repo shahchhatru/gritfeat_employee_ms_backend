@@ -7,8 +7,6 @@ import { sendEmailWithHTML } from "../../../utils/otp";
 import { createOrganization, getOrganizationById, getOrganizationByEmail, getAllOrganizations, deleteOrganizationById, updateOrganizationById, getOrganizationByLinkedin } from "./repostiory";
 import UserService from "../User/service";
 
-
-
 const OrganizationService = {
     validateEmail(email: string) {
         // Regular expression pattern for email validation
@@ -65,16 +63,14 @@ const OrganizationService = {
 
         const otp = await OTPService.generateOrganizationOTP(org._id.toString());
         if (!otp) throw new CustomError(messages.otp.creation_failed, 400);
-        const verificationLink = `${env.frontendurl}/verify-organization/${org._id}?otp=${otp}`
-        const html = `<p>Thank you for signing up with us!</p><p>Here is the link for verifying your account:</p><p><a href="${verificationLink}">Verify your account</a></p>`
+        const verificationLink = `${env.frontendurl}/auth/verifyToken/?userId=${org._id}&otp=${otp}`
+        const html = `<p>Thank you for signing up with us!</p><p>Here is the link ${verificationLink} for verifying your account:</p><p><a href="${verificationLink}"><button>Verify your account</button></a></p>`
         const user = await UserService.generateOrgAdnimUser({
             email: orgData.email,
             password: orgData.password,
             name: `${orgData.name} Admin`,
             organizationId: org._id.toString(),
             role: "ADMIN",
-
-
         })
         const org1 = await updateOrganizationById(org._id.toString(), { admin: String(user._id) })
         if (!org1) throw new CustomError(messages.organization.create_failed, 400);
