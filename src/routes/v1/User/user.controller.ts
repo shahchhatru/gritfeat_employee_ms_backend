@@ -13,6 +13,13 @@ const UserController = {
       if (user.role !== 'ADMIN') throw new Error(messages.actions.forbidden_message);
       const body = req.body;
       const result = await UserService.createUser({ ...body, organizationId: user.organizationId });
+      const cacheKey = 'users:all';
+      await redisClient.del(cacheKey);
+      const username_cacheKey = 'users:nameAndId';
+      await redisClient.del(username_cacheKey);
+      const organizationcacheKey = `users:organization:${user.organizationId}`;
+      await redisClient.del(organizationcacheKey);
+
       return successResponse({
         response: res,
         message: messages.user.creation_success,
@@ -134,6 +141,12 @@ const UserController = {
       // Invalidate the cache for the updated user
       const cacheKey = `user:${id}`;
       await redisClient.del(cacheKey);
+      await redisClient.del("users:all");
+      await redisClient.del("users:nameAndId");
+      const user = res.locals.user;
+      const organizationcacheKey = `users:organization:${user.organizationId}`;
+      await redisClient.del(organizationcacheKey);
+
 
       return successResponse({
         response: res,
