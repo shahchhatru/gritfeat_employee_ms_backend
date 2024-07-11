@@ -19,6 +19,10 @@ const ApplicationController = {
             await redisClient.del(cacheKey);
             const supervisorCacheKey = `applications:supervisor:${body.supervisor?.toString()}`;
             await redisClient.del(supervisorCacheKey);
+            const usercacheKey = `applications:user:${user._id}`;
+            await redisClient.del(usercacheKey);
+
+
 
 
             return successResponse({
