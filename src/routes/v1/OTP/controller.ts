@@ -54,6 +54,7 @@ const OtpController = {
     async verifyOrganizationOTP(req: Request<{ userId: string }, unknown, { otp: number }>, res: Response, next: NextFunction) {
         const { userId } = req.params;
         const { otp } = req.body;
+        console.log(`OTP for org ${userId} is ${otp}`);
         try {
             const result = await OTPService.verifyOrganizationOTP(userId, otp);
             return successResponse({

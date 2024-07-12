@@ -63,7 +63,7 @@ const OrganizationService = {
 
         const otp = await OTPService.generateOrganizationOTP(org._id.toString());
         if (!otp) throw new CustomError(messages.otp.creation_failed, 400);
-        const verificationLink = `${env.frontendurl}/auth/verifyToken/?userId=${org._id}&otp=${otp}`
+        const verificationLink = `${env.frontendurl}/auth/verifyToken/?userId=${org._id}&otp=${otp?.value}`
         const html = `<p>Thank you for signing up with us!</p><p>Here is the link ${verificationLink} for verifying your account:</p><p><a href="${verificationLink}"><button>Verify your account</button></a></p>`
         const user = await UserService.generateOrgAdnimUser({
             email: orgData.email,

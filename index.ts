@@ -2,13 +2,12 @@ import cors from 'cors';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import express, { Request, Response } from 'express';
-// import redis from 'redis';
+import deSerializeUser from './src/middleware/deSerializeUser';
 import router from './src/routes/v1';
 import env from './src/config/env';
 import logger from './src/config/logger';
 import { connectToDB } from './src/config/dbConnect';
 import { errorResponse } from './src/utils/HttpResponse';
-import deSerializeUser from './src/middleware/deSerializeUser';
 import { globalErrorHandler } from './src/middleware/globalErrorHandler';
 import { redisClient } from './src/config/redisConfig';
 
@@ -40,8 +39,8 @@ import { redisClient } from './src/config/redisConfig';
     morgan(':date[iso] :level :method :url :status :res[content-length] :referrer :total-time[5] - :response-time ms'),
   );
 
-  app.use(deSerializeUser)
-
+  // app.use(deSerializeUser)
+  app.use(deSerializeUser);
   app.use('/api/v1', router);
   app.use(globalErrorHandler);
   //Add your route path prefix

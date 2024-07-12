@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import Health from './Health';
 import UserRouter from './User';
-import OTPRouter from './OTP';
 import AuthRouter from './Auth';
 import TaskRouter from './Task';
 import ActivityRouter from './Activity';
@@ -12,10 +11,12 @@ import EmployeeRouter from './Employee';
 import ApplicationRouter from './Applications';
 import SalaryRouter from './Salary';
 import attendenceRouter from './Attendence';
+
 const router = Router();
-router.use('/health', Health);
 router.use('/users', UserRouter);
-router.use('/users/:userId/otp', OTPRouter);
+
+router.use('/health', Health);
+
 router.use("/auth", AuthRouter);
 router.use('/tasks', TaskRouter);
 router.use('/activities', ActivityRouter);
