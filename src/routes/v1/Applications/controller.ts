@@ -124,7 +124,7 @@ const ApplicationController = {
             await redisClient.del(cacheKey);
             const orgCacheKey = `applications:organization:${user.organizationId}`;
             await redisClient.del(orgCacheKey);
-            const usercacheKey = `applications:user:${user._id}`;
+            const usercacheKey = `applications:user:${application.user?.toString()}`;
             await redisClient.del(usercacheKey);
             const supervisorCacheKey = `applications:supervisor:${application.supervisor?.toString()}`;
             await redisClient.del(supervisorCacheKey);

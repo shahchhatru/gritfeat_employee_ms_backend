@@ -7,6 +7,8 @@ import OTPService from "../OTP/service";
 import { sendEmailWithHTML } from "../../../utils/otp";
 import ProfileService from '../Profile/service'
 import EmployeeService from "../Employee/service";
+import { redisClient } from '../../../config/redisConfig'; // Import the Redis client
+
 const UserService = {
     async createUser(userData: User) {
         this.validateEmail(userData.email);
@@ -28,6 +30,13 @@ const UserService = {
         this.validatePassword(userData.password);
         if (!userData.organizationId) throw new CustomError(messages.actions.forbidden_message + "Organizaiton Id missing", 403)
         const data = await createUserRepo({ ...userData, isVerified: true, verifiedAt: new Date().toISOString() });
+        const cacheKey = 'users:all';
+        await redisClient.del(cacheKey);
+        const username_cacheKey = 'users:nameAndId';
+        await redisClient.del(username_cacheKey);
+        const organizationcacheKey = `users:organization:${userData.organizationId}`;
+        await redisClient.del(organizationcacheKey);
+
         if (!data) throw new CustomError(messages.auth.invalid_account, 403)
         if (!data._id) throw new CustomError(messages.auth.invalid_account, 403)
         return data;
