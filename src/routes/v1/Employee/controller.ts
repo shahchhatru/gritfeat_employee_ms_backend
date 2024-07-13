@@ -203,11 +203,23 @@ const EmployeeController = {
             if (!bonusAmount || typeof bonusAmount !== 'string') {
                 throw new CustomError('Invalid bonus amount', 400);
             }
+            const employee = await EmployeeService.getEmployeeByUserId(userId);
+            if (!employee) {
+                throw new CustomError(messages.employee.not_found, 404);
+            }
             const result = await EmployeeService.addBonusAmountByUserId(userId, bonusAmount);
 
             // Invalidate the cache for the employee
-            const cacheKey = `employee:${userId}`;
+            const cacheKey = `employee:${employee._id}`;
             await redisClient.del(cacheKey);
+            const AllEmployeecacheKey = `employees:${user.organizationId}`;
+
+            // Invalidate the cache for all employees
+            await redisClient.del(AllEmployeecacheKey);
+            const bonuscacheKey = `employee:bonus:${userId}`;
+
+            // Check if the data is in the cache
+            await redisClient.del(bonuscacheKey);
 
             return successResponse({
                 response: res,
@@ -233,11 +245,23 @@ const EmployeeController = {
             if (!bonusAmount || typeof bonusAmount !== 'string') {
                 throw new CustomError('Invalid bonus amount', 400);
             }
+            const employee = await EmployeeService.getEmployeeByUserId(userId);
+            if (!employee) {
+                throw new CustomError(messages.employee.not_found, 404);
+            }
             const result = await EmployeeService.removeBonusAmountByUserId(userId, bonusAmount);
 
+
             // Invalidate the cache for the employee
-            const cacheKey = `employee:${userId}`;
+            const cacheKey = `employee:${employee._id}`;
             await redisClient.del(cacheKey);
+            const AllEmployeecacheKey = `employees:${user.organizationId}`;
+            const bonuscacheKey = `employee:bonus:${userId}`;
+
+            // Check if the data is in the cache
+            await redisClient.del(bonuscacheKey);
+            // Invalidate the cache for all employees
+            await redisClient.del(AllEmployeecacheKey);
 
             return successResponse({
                 response: res,
@@ -265,6 +289,7 @@ const EmployeeController = {
                     status: 200,
                 });
             }
+
 
             const result = await EmployeeService.getTotalBonusAmountByUserId(userId);
 
@@ -296,6 +321,21 @@ const EmployeeController = {
             // Invalidate the cache for the employee
             const cacheKey = `employee:bonus:${userId}`;
             await redisClient.del(cacheKey);
+            const employee = await EmployeeService.getEmployeeByUserId(userId);
+            if (!employee) {
+                throw new CustomError(messages.employee.not_found, 404);
+            }
+            // Invalidate the cache for the employee
+            const empcacheKey = `employee:${employee._id}`;
+            await redisClient.del(empcacheKey);
+            const AllEmployeecacheKey = `employees:${user.organizationId}`;
+
+            // Invalidate the cache for all employees
+            await redisClient.del(AllEmployeecacheKey);
+            const bonuscacheKey = `employee:bonus:${userId}`;
+
+            // Clear if the data is in the cache
+            await redisClient.del(bonuscacheKey);
 
             return successResponse({
                 response: res,
