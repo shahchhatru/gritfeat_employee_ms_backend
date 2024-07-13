@@ -256,12 +256,15 @@ const EmployeeController = {
             const cacheKey = `employee:${employee._id}`;
             await redisClient.del(cacheKey);
             const AllEmployeecacheKey = `employees:${user.organizationId}`;
+
+            // Invalidate the cache for all employees
+            await redisClient.del(AllEmployeecacheKey);
             const bonuscacheKey = `employee:bonus:${userId}`;
 
             // Check if the data is in the cache
             await redisClient.del(bonuscacheKey);
-            // Invalidate the cache for all employees
-            await redisClient.del(AllEmployeecacheKey);
+
+
 
             return successResponse({
                 response: res,
