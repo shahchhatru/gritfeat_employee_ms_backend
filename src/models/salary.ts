@@ -6,9 +6,7 @@ import cron from 'node-cron';
 import { OrganizationModel } from './organization';
 import EmployeeModel from './employee';
 
-
-export interface SalaryDocument extends Document, Salary {
-}
+export interface SalaryDocument extends Document, Salary { }
 
 const SalarySchema = new mongoose.Schema({
     baseAmount: {
@@ -58,15 +56,16 @@ const SalarySchema = new mongoose.Schema({
     timestamps: true
 });
 
-// Add a unique index on user, month, and year fields
-SalarySchema.index({ user: 1, month: 1, year: 1 }, { unique: true });
+// Add a unique index on employee, month, and year fields
+SalarySchema.index({ employee: 1, month: 1, year: 1 }, { unique: true });
 
 export const SalaryModel = mongoose.model<SalaryDocument>('Salary', SalarySchema);
 
-// Function to get the current month as an enum value
-const getCurrentMonth = (): Month => {
+// Function to get the previous month as an enum value
+const getPreviousMonth = (): Month => {
     const monthNames = Object.values(Month);
-    return monthNames[new Date().getMonth()];
+    const previousMonthIndex = (new Date().getMonth() - 1 + 12) % 12;
+    return monthNames[previousMonthIndex];
 };
 
 // Function to calculate salary components
@@ -77,6 +76,20 @@ const calculateSalary = (baseSalary: number) => {
     return { tax, pf, netAmount };
 };
 
+// Function to check if the salary payment date falls on a weekend or holiday
+const adjustForWeekendHoliday = (date: Date): Date => {
+    // Add logic to adjust for holidays if needed
+    const day = date.getDay();
+    if (day === 0) {
+        // Sunday
+        date.setDate(date.getDate() + 1);
+    } else if (day === 6) {
+        // Saturday
+        date.setDate(date.getDate() + 2);
+    }
+    return date;
+};
+
 cron.schedule('0 1 * * *', async () => { // Runs daily at 1 AM
     try {
         const organizations = await OrganizationModel.find({});
@@ -85,22 +98,22 @@ cron.schedule('0 1 * * *', async () => { // Runs daily at 1 AM
             const employees = await EmployeeModel.find({ organizationId: org._id }).populate('user');
 
             const currentDate = new Date();
-            const currentMonth = getCurrentMonth();
+            const currentMonth = getPreviousMonth();
             const currentYear = currentDate.getFullYear().toString();
 
             for (const employee of employees) {
-
                 if (employee?.joiningDate == null) {
                     continue;
                 }
-                const joiningDate = new Date(employee?.joiningDate?.toString());
-                const oneMonthAfterJoining = new Date(joiningDate.setMonth(joiningDate.getMonth() + 1));
 
-                if (currentDate >= oneMonthAfterJoining) {
-                    // Check if a salary entry already exists for this month and year
-                    if (!employee?._id) {
-                        continue;
-                    }
+                const joiningDate = new Date(employee?.joiningDate?.toString());
+                const payDate = new Date(joiningDate);
+                payDate.setMonth(payDate.getMonth() + 1);
+                payDate.setDate(joiningDate.getDate());
+
+                const adjustedPayDate = adjustForWeekendHoliday(payDate);
+
+                if (currentDate >= adjustedPayDate) {
                     const existingSalary = await SalaryModel.findOne({
                         employee: employee._id?.toString(),
                         month: currentMonth,
@@ -117,7 +130,7 @@ cron.schedule('0 1 * * *', async () => { // Runs daily at 1 AM
                             pf,
                             netAmount,
                             bonus: employee.bonus?.reduce((a, b) => a + b, 0),
-                            employee: employee._id.toString(),
+                            employee: employee?._id?.toString(),
                             month: currentMonth,
                             year: currentYear,
                             organization: org._id
