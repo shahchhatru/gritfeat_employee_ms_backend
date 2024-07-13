@@ -17,15 +17,23 @@ const SalaryController = {
             if (user.role !== 'ADMIN') throw new CustomError(messages.actions.forbidden_message, 404);
 
             const currentDate = new Date();
-            const monthIndex = currentDate.getMonth(); // getMonth returns 0-11
-            const year = currentDate.getFullYear().toString();
+            const monthIndex = req.body.month; // getMonth returns 0-11
+            const year = req.body.year || currentDate.getFullYear().toString();
 
             const months = [
                 "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE",
                 "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"
             ];
 
+
+
+
             const month = months[monthIndex];
+
+            const existingSalary = await SalaryService.getSalaryByUserMonthAndYear(body.employee, month, year);
+            if (existingSalary) {
+                throw new CustomError(messages.salary.already_exists, 400);
+            }
 
             const salary = await SalaryService.createSalary({
                 ...body,

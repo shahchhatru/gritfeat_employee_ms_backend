@@ -148,7 +148,8 @@ export const messages = {
     creation_failed: 'Failed to create Salary Reciept',
     fetch_success: "Sucessfully fetched data",
     edit_success: 'Salary Reciept Edited Successfully',
-    organization_fail: "Salary related to organization can't be found"
+    organization_fail: "Salary related to organization can't be found",
+    already_exists: "Unable to create salary as the salary for given month and year already exists"
   },
   attendence: {
     creation_success: 'Attendence Reciept Storedd Successfully in database',

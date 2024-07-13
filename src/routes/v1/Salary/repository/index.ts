@@ -27,6 +27,10 @@ export const getAllSalaryByUserAndYear = (user: string, year: string): Promise<S
     return SalaryModel.find({ employee: user, year: year }).exec();
 }
 
+export const getSalaryByEmployeeMonthAndYear = (user: string, month: string, year: string): Promise<SalaryDocument[]> => {
+    return SalaryModel.find({ employee: user, month, year }).exec();
+}
+
 export const getAllSalaryByUserAndMonth = (user: string, month: string): Promise<SalaryDocument[]> => {
     return SalaryModel.find({ employee: user, month }).exec();
 }
