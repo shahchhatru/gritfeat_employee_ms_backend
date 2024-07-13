@@ -4,6 +4,7 @@ import { messages } from "../../../utils/Messages";
 import SalaryService from "./service";
 import CustomError from "../../../utils/Error";
 import { redisClient } from "../../../config/redisConfig"; // Import the Redis client
+import EmployeeService from "../Employee/service";
 
 
 const SalaryController = {
@@ -15,7 +16,8 @@ const SalaryController = {
             if (!user) throw new CustomError(messages.user.user_not_found, 404);
             if (!user._id) throw new CustomError(messages.user.user_not_found, 404);
             if (user.role !== 'ADMIN') throw new CustomError(messages.actions.forbidden_message, 404);
-
+            const employee = await EmployeeService.getEmployeeByUserId(body.employee);
+            if (!employee._id) throw new CustomError(messages.employee.not_found, 404);
             const currentDate = new Date();
             const monthIndex = req.body.month; // getMonth returns 0-11
             const year = req.body.year || currentDate.getFullYear().toString();
@@ -31,15 +33,23 @@ const SalaryController = {
             const month = months[monthIndex];
 
             const existingSalary = await SalaryService.getSalaryByUserMonthAndYear(body.employee, month, year);
-            if (existingSalary) {
+            console.log({ existingSalary });
+            if (existingSalary.length > 0) {
                 throw new CustomError(messages.salary.already_exists, 400);
             }
+            const bonus = employee.bonus ? employee.bonus?.reduce((a: number, b: number) => a + b, 0) : 0;
+            const netAmount = employee.salary + bonus;
 
             const salary = await SalaryService.createSalary({
-                ...body,
-                organization: user.organization,
+                employee: employee._id.toString(),
+                organization: user.organizationId,
                 month,
                 year,
+                baseAmount: employee.salary, // provide default value
+                bonus: bonus, // provide default value
+                tax: 0, // provide default value
+                pf: 0, // provide default value
+                netAmount: netAmount, // provide default value
             });
 
             // Invalidate the cache for all salaries for the organization

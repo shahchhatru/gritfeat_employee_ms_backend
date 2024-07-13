@@ -51,6 +51,7 @@ const SalaryService = {
 
     async getSalaryByUserMonthAndYear(user: string, month: string, year: string) {
         const employee = await EmployeeService.getEmployeeByUserId(user);
+        console.log(employee);
         if (!employee) throw new CustomError('Employee not found', 404);
         if (!employee?._id) throw new CustomError('Employee not found', 404);
         const sal = await getSalaryByEmployeeMonthAndYear(employee?._id?.toString(), month, year);
