@@ -6,7 +6,6 @@ import CustomError from "../../../utils/Error";
 import { redisClient } from "../../../config/redisConfig"; // Import the Redis client
 import EmployeeService from "../Employee/service";
 
-
 const SalaryController = {
 
     async createSalary(req: Request, res: Response, next: NextFunction) {
@@ -19,7 +18,7 @@ const SalaryController = {
             const employee = await EmployeeService.getEmployeeByUserId(body.employee);
             if (!employee._id) throw new CustomError(messages.employee.not_found, 404);
             const currentDate = new Date();
-            const monthIndex = req.body.month; // getMonth returns 0-11
+            const month = req.body.month; // getMonth returns 0-11
             const year = req.body.year || currentDate.getFullYear().toString();
 
             const months = [
@@ -30,7 +29,7 @@ const SalaryController = {
 
 
 
-            const month = months[monthIndex];
+            // const month = months[monthIndex];
 
             const existingSalary = await SalaryService.getSalaryByUserMonthAndYear(body.employee, month, year);
             console.log({ existingSalary });
@@ -51,6 +50,8 @@ const SalaryController = {
                 pf: 0, // provide default value
                 netAmount: netAmount, // provide default value
             });
+
+            await EmployeeService.clearBonusArrayByUserId(body.employee);
 
             // Invalidate the cache for all salaries for the organization
             const orgCacheKey = `salaries:organization:${user.organization}`;
