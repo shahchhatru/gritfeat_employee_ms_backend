@@ -21,10 +21,10 @@ const SalaryController = {
             const month = req.body.month; // getMonth returns 0-11
             const year = req.body.year || currentDate.getFullYear().toString();
 
-            const months = [
-                "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE",
-                "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"
-            ];
+            // const months = [
+            //     "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE",
+            //     "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"
+            // ];
 
 
 
